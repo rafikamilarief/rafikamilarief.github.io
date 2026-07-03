@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kalkulator Waris Islam — Faraidh</title>
+  <style>
+    /* ── RESET & VARIABLES ─────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --accent:   #1e6df7;
+      --green:    #16a34a;
+      --bg:       #F8F9FA;
+      --white:    #ffffff;
+      --dark:     #212529;
+      --muted:    #6c757d;
+      --border:   #dee2e6;
+      --radius:   10px;
+      --shadow:   0 2px 12px rgba(0,0,0,0.07);
+    }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--dark);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    /* ── HEADER ────────────────────────────────────── */
+    header {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 100;
+    }
+    .nav-inner {
+      max-width: 860px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 60px; padding: 0 1.5rem;
+    }
+    .nav-back {
+      display: flex; align-items: center; gap: 0.5rem;
+      font-size: 0.88rem; font-weight: 600; color: var(--accent);
+      transition: opacity 0.2s;
+    }
+    .nav-back:hover { opacity: 0.75; }
+    .nav-back svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+    .nav-title { font-size: 0.95rem; font-weight: 700; color: var(--dark); }
+    .nav-badge {
+      font-size: 0.72rem; font-weight: 700; background: rgba(30,109,247,0.1);
+      color: var(--accent); padding: 0.2rem 0.65rem; border-radius: 20px;
+    }
+
+    /* ── LAYOUT ─────────────────────────────────────── */
+    .wrap { max-width: 860px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+
+    .page-title { font-size: clamp(1.4rem, 3vw, 1.9rem); font-weight: 800; color: var(--dark); margin-bottom: 0.4rem; }
+    .page-sub   { font-size: 0.93rem; color: var(--muted); margin-bottom: 2rem; }
+
+    /* ── CARD ───────────────────────────────────────── */
+    .card {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.8rem;
+      box-shadow: var(--shadow); margin-bottom: 1.5rem;
+    }
+    .card-title {
+      font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.1em; color: var(--accent); margin-bottom: 1.2rem;
+    }
+
+    /* ── FORM GRID ──────────────────────────────────── */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+
+    .field label {
+      display: block; font-size: 0.82rem; font-weight: 600;
+      color: var(--dark); margin-bottom: 0.35rem;
+    }
+    .field label span { font-weight: 400; color: var(--muted); }
+
+    .field input[type="number"],
+    .field input[type="text"] {
+      width: 100%; padding: 0.6rem 0.85rem;
+      border: 1px solid var(--border); border-radius: 7px;
+      font-size: 0.93rem; color: var(--dark);
+      background: var(--bg);
+      transition: border-color 0.2s;
+      -moz-appearance: textfield;
+    }
+    .field input:focus { outline: none; border-color: var(--accent); background: var(--white); }
+    .field input::-webkit-outer-spin-button,
+    .field input::-webkit-inner-spin-button { -webkit-appearance: none; }
+
+    /* ── CHECKBOX ROW ───────────────────────────────── */
+    .check-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
+      gap: 0.6rem;
+    }
+    .check-item {
+      display: flex; align-items: center; gap: 0.6rem;
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 7px; padding: 0.55rem 0.85rem;
+      cursor: pointer; transition: all 0.2s;
+      user-select: none;
+    }
+    .check-item:hover { border-color: var(--accent); background: #eff6ff; }
+    .check-item input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px; cursor: pointer; }
+    .check-item .ci-label { font-size: 0.85rem; font-weight: 500; color: var(--dark); }
+
+    /* count badge next to checkbox label */
+    .count-inline {
+      margin-left: auto;
+    }
+    .count-inline input[type="number"] {
+      width: 52px; padding: 0.2rem 0.4rem;
+      border: 1px solid var(--border); border-radius: 5px;
+      font-size: 0.82rem; text-align: center;
+      background: var(--white);
+      -moz-appearance: textfield;
+    }
+    .count-inline input::-webkit-outer-spin-button,
+    .count-inline input::-webkit-inner-spin-button { -webkit-appearance: none; }
+
+    /* ── BUTTON ─────────────────────────────────────── */
+    .btn-hitung {
+      width: 100%; padding: 0.85rem;
+      background: var(--accent); color: #fff;
+      border: none; border-radius: var(--radius);
+      font-size: 1rem; font-weight: 700; cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+      margin-top: 0.5rem;
+    }
+    .btn-hitung:hover { background: #155dcc; transform: translateY(-1px); }
+    .btn-reset {
+      width: 100%; padding: 0.7rem;
+      background: transparent; color: var(--muted);
+      border: 1px solid var(--border); border-radius: var(--radius);
+      font-size: 0.9rem; font-weight: 600; cursor: pointer;
+      transition: all 0.2s; margin-top: 0.6rem;
+    }
+    .btn-reset:hover { border-color: var(--muted); color: var(--dark); }
+
+    /* ── RESULT ─────────────────────────────────────── */
+    #hasil { display: none; }
+
+    .result-header {
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.2rem;
+    }
+    .result-total {
+      font-size: 1.1rem; font-weight: 800; color: var(--dark);
+    }
+    .result-total span { color: var(--accent); }
+
+    .result-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    .result-table th {
+      text-align: left; padding: 0.55rem 0.85rem;
+      background: var(--bg); border-bottom: 2px solid var(--border);
+      font-size: 0.76rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.07em; color: var(--muted);
+    }
+    .result-table td {
+      padding: 0.7rem 0.85rem; border-bottom: 1px solid var(--bg);
+      vertical-align: middle;
+    }
+    .result-table tr:last-child td { border-bottom: none; }
+    .result-table tr:hover td { background: #f8fbff; }
+
+    .ahli-name { font-weight: 600; color: var(--dark); }
+    .ahli-dasar { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
+
+    .frac-badge {
+      display: inline-block; background: rgba(30,109,247,0.08);
+      color: var(--accent); border: 1px solid rgba(30,109,247,0.18);
+      font-size: 0.78rem; font-weight: 700;
+      padding: 0.18rem 0.55rem; border-radius: 5px;
+    }
+
+    .nominal {
+      font-weight: 700; color: var(--green); font-size: 0.95rem;
+    }
+
+    .bar-wrap { width: 100%; background: var(--bg); border-radius: 4px; height: 8px; overflow: hidden; margin-top: 4px; }
+    .bar-fill  { height: 100%; border-radius: 4px; background: var(--accent); transition: width 0.4s ease; }
+
+    /* ashabah row */
+    .ashabah-row td:first-child::before {
+      content: '⟳ ';
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    /* warning / info box */
+    .info-box {
+      background: #fffbeb; border: 1px solid #fde68a;
+      border-radius: 8px; padding: 0.85rem 1rem;
+      font-size: 0.85rem; color: #92400e;
+      margin-bottom: 1.2rem; line-height: 1.6;
+    }
+    .info-box strong { font-weight: 700; }
+
+    /* disclaimer */
+    .disclaimer {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.2rem 1.5rem;
+      font-size: 0.82rem; color: var(--muted); line-height: 1.7;
+      margin-top: 1.5rem;
+    }
+    .disclaimer strong { color: var(--dark); }
+
+    /* ── FOOTER ─────────────────────────────────────── */
+    footer {
+      text-align: center; padding: 1.4rem;
+      font-size: 0.82rem; color: var(--muted);
+      border-top: 1px solid var(--border);
+      background: var(--white);
+    }
+    footer a { color: var(--accent); font-weight: 600; }
+
+    @media (max-width: 540px) {
+      .form-grid { grid-template-columns: 1fr; }
+      .check-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="nav-inner">
+      <a class="nav-back" href="index.html">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        Kembali ke Portfolio
+      </a>
+      <span class="nav-title">Kalkulator Waris</span>
+      <span class="nav-badge">Faraidh</span>
+    </div>
+  </header>
+
+  <div class="wrap">
+
+    <h1 class="page-title">Kalkulator Waris Islam</h1>
+    <p class="page-sub">Hitung pembagian harta waris berdasarkan hukum Faraidh (Al-Qur'an, Sunnah, dan Ijma' Ulama)</p>
+
+    <!-- HARTA -->
+    <div class="card">
+      <p class="card-title">Harta Warisan</p>
+      <div class="form-grid">
+        <div class="field">
+          <label for="harta">Total Harta Bersih <span>(setelah hutang & wasiat)</span></label>
+          <input type="number" id="harta" placeholder="Contoh: 100000000" min="0" />
+        </div>
+        <div class="field">
+          <label for="pewaris">Jenis Kelamin Pewaris</label>
+          <select id="pewaris" style="width:100%;padding:0.6rem 0.85rem;border:1px solid var(--border);border-radius:7px;font-size:0.93rem;background:var(--bg);color:var(--dark);">
+            <option value="laki">Laki-laki</option>
+            <option value="perempuan">Perempuan</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- AHLI WARIS -->
+    <div class="card">
+      <p class="card-title">Ahli Waris yang Ada</p>
+      <div class="check-grid" id="ahliWarisGrid">
+
+        <!-- Suami/Istri -->
+        <label class="check-item">
+          <input type="checkbox" id="ck_suami" />
+          <span class="ci-label">Suami</span>
+        </label>
+        <label class="check-item">
+          <input type="checkbox" id="ck_istri" />
+          <span class="ci-label">Istri</span>
+          <span class="count-inline"><input type="number" id="n_istri" value="1" min="1" max="4" /></span>
+        </label>
+
+        <!-- Anak -->
+        <label class="check-item">
+          <input type="checkbox" id="ck_anak_laki" />
+          <span class="ci-label">Anak Laki-laki</span>
+          <span class="count-inline"><input type="number" id="n_anak_laki" value="1" min="1" /></span>
+        </label>
+        <label class="check-item">
+          <input type="checkbox" id="ck_anak_perempuan" />
+          <span class="ci-label">Anak Perempuan</span>
+          <span class="count-inline"><input type="number" id="n_anak_perempuan" value="1" min="1" /></span>
+        </label>
+
+        <!-- Orang tua -->
+        <label class="check-item">
+          <input type="checkbox" id="ck_ayah" />
+          <span class="ci-label">Ayah</span>
+        </label>
+        <label class="check-item">
+          <input type="checkbox" id="ck_ibu" />
+          <span class="ci-label">Ibu</span>
+        </label>
+
+        <!-- Kakek / Nenek -->
+        <label class="check-item">
+          <input type="checkbox" id="ck_kakek" />
+          <span class="ci-label">Kakek (dari Ayah)</span>
+        </label>
+        <label class="check-item">
+          <input type="checkbox" id="ck_nenek" />
+          <span class="ci-label">Nenek</span>
+        </label>
+
+        <!-- Saudara kandung -->
+        <label class="check-item">
+          <input type="checkbox" id="ck_sdra_laki" />
+          <span class="ci-label">Saudara Laki-laki</span>
+          <span class="count-inline"><input type="number" id="n_sdra_laki" value="1" min="1" /></span>
+        </label>
+        <label class="check-item">
+          <input type="checkbox" id="ck_sdri_perempuan" />
+          <span class="ci-label">Saudara Perempuan</span>
+          <span class="count-inline"><input type="number" id="n_sdri_perempuan" value="1" min="1" /></span>
+        </label>
+
+        <!-- Cucu -->
+        <label class="check-item">
+          <input type="checkbox" id="ck_cucu_laki" />
+          <span class="ci-label">Cucu Laki-laki</span>
+          <span class="count-inline"><input type="number" id="n_cucu_laki" value="1" min="1" /></span>
+        </label>
+        <label class="check-item">
+          <input type="checkbox" id="ck_cucu_perempuan" />
+          <span class="ci-label">Cucu Perempuan</span>
+          <span class="count-inline"><input type="number" id="n_cucu_perempuan" value="1" min="1" /></span>
+        </label>
+
+      </div>
+    </div>
+
+    <button class="btn-hitung" onclick="hitungWaris()">Hitung Pembagian Waris</button>
+    <button class="btn-reset" onclick="resetForm()">Reset</button>
+
+    <!-- HASIL -->
+    <div id="hasil">
+      <div class="card" style="margin-top:2rem; border-top: 3px solid var(--accent);">
+        <div class="result-header">
+          <p class="card-title" style="margin-bottom:0">Hasil Pembagian</p>
+          <p class="result-total">Total Harta: <span id="res-total">—</span></p>
+        </div>
+        <div id="res-warning"></div>
+        <table class="result-table">
+          <thead>
+            <tr>
+              <th>Ahli Waris</th>
+              <th>Bagian</th>
+              <th>Nominal</th>
+              <th style="width:120px">Proporsi</th>
+            </tr>
+          </thead>
+          <tbody id="res-body"></tbody>
+        </table>
+      </div>
+
+      <div class="disclaimer">
+        <strong>Catatan Penting:</strong> Hasil perhitungan ini bersifat informatif dan didasarkan pada
+        kaidah Faraidh umum. Kasus-kasus tertentu (radd, 'aul, mu'aqqad, dll.) dan perbedaan mazhab
+        mungkin menghasilkan angka berbeda. Untuk kepastian hukum, konsultasikan dengan
+        <strong>ulama, notaris, atau pengadilan agama</strong> yang berwenang.
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    Dibuat oleh <a href="index.html">Rafi Kamil Arief</a> &mdash; Portfolio Project &mdash; Hanya untuk referensi, bukan fatwa hukum.
+  </footer>
+
+  <script>
+    /* ================================================
+       FARAIDH CALCULATOR
+       Referensi: Al-Baqarah 180, An-Nisa 11-12,176
+       Metode: Ashab al-Furud + Ashabah
+    ================================================ */
+
+    function fmt(n) {
+      return 'Rp ' + Math.round(n).toLocaleString('id-ID');
+    }
+
+    function fraksi(p, q) {
+      // return string fraction simplified
+      function gcd(a,b){ return b===0?a:gcd(b,a%b); }
+      const g = gcd(p,q);
+      if (p/g === q/g) return '1/1';
+      return (p/g) + '/' + (q/g);
+    }
+
+    function resetForm() {
+      document.querySelectorAll('input[type=checkbox]').forEach(c => c.checked = false);
+      document.getElementById('harta').value = '';
+      document.getElementById('hasil').style.display = 'none';
+    }
+
+    function ck(id) { return document.getElementById(id).checked; }
+    function num(id) { return parseInt(document.getElementById(id).value) || 1; }
+
+    function hitungWaris() {
+      const H = parseFloat(document.getElementById('harta').value);
+      if (!H || H <= 0) { alert('Masukkan total harta warisan terlebih dahulu.'); return; }
+
+      // Kumpulkan ahli waris
+      const punya_anak_laki     = ck('ck_anak_laki');
+      const punya_anak_perempuan= ck('ck_anak_perempuan');
+      const punya_anak          = punya_anak_laki || punya_anak_perempuan;
+      const punya_cucu_laki     = ck('ck_cucu_laki');
+      const punya_cucu_perempuan= ck('ck_cucu_perempuan');
+      const punya_cucu          = punya_cucu_laki || punya_cucu_perempuan;
+      const punya_ayah          = ck('ck_ayah');
+      const punya_ibu           = ck('ck_ibu');
+      const punya_kakek         = ck('ck_kakek');
+      const punya_nenek         = ck('ck_nenek');
+      const punya_suami         = ck('ck_suami');
+      const punya_istri         = ck('ck_istri');
+      const punya_sdra_laki     = ck('ck_sdra_laki');
+      const punya_sdri_perempuan= ck('ck_sdri_perempuan');
+
+      const n_anak_laki     = punya_anak_laki      ? num('n_anak_laki')      : 0;
+      const n_anak_perempuan= punya_anak_perempuan ? num('n_anak_perempuan') : 0;
+      const n_cucu_laki     = punya_cucu_laki      ? num('n_cucu_laki')      : 0;
+      const n_cucu_perempuan= punya_cucu_perempuan ? num('n_cucu_perempuan') : 0;
+      const n_istri         = punya_istri          ? num('n_istri')          : 0;
+      const n_sdra_laki     = punya_sdra_laki      ? num('n_sdra_laki')      : 0;
+      const n_sdri_perempuan= punya_sdri_perempuan ? num('n_sdri_perempuan') : 0;
+
+      // Daftar penerima: {nama, dasar, bagianFrac, nominalRatio, ashabah}
+      let penerima = [];
+      let sisaRatio = 1.0; // dari total H
+      let totalFurud = 0;
+
+      // ── 1. SUAMI / ISTRI ──────────────────────────
+      if (punya_suami) {
+        const r = punya_anak || punya_cucu ? 1/4 : 1/2;
+        const dasar = punya_anak||punya_cucu ? 'An-Nisa 4:12 (ada anak/cucu)' : 'An-Nisa 4:12 (tidak ada anak)';
+        penerima.push({ nama:'Suami', n:1, dasar, ratio: r, frac: punya_anak||punya_cucu?'1/4':'1/2', ashabah:false });
+        totalFurud += r;
+      }
+      if (punya_istri) {
+        const r = (punya_anak||punya_cucu ? 1/8 : 1/4) / n_istri; // dibagi rata antar istri
+        const rTotal = punya_anak||punya_cucu ? 1/8 : 1/4;
+        const frac = punya_anak||punya_cucu ? '1/8' : '1/4';
+        const dasar = punya_anak||punya_cucu ? 'An-Nisa 4:12 (ada anak/cucu)' : 'An-Nisa 4:12 (tidak ada anak)';
+        if (n_istri === 1) {
+          penerima.push({ nama:'Istri', n:1, dasar, ratio: rTotal, frac, ashabah:false });
+        } else {
+          for (let i=1; i<=n_istri; i++) {
+            penerima.push({ nama:`Istri ke-${i}`, n:1, dasar:`${frac} dibagi ${n_istri} istri`, ratio: r, frac:`${frac}÷${n_istri}`, ashabah:false });
+          }
+        }
+        totalFurud += rTotal;
+      }
+
+      // ── 2. IBU ────────────────────────────────────
+      if (punya_ibu) {
+        const banyakSaudara = (punya_sdra_laki?n_sdra_laki:0) + (punya_sdri_perempuan?n_sdri_perempuan:0);
+        const r = (punya_anak || punya_cucu || banyakSaudara>=2) ? 1/6 : 1/3;
+        const dasar = (punya_anak||punya_cucu) ? 'An-Nisa 4:11 (ada anak)' : banyakSaudara>=2 ? 'An-Nisa 4:11 (ada 2+ saudara)' : 'An-Nisa 4:11 (1/3)';
+        penerima.push({ nama:'Ibu', n:1, dasar, ratio:r, frac: r===1/6?'1/6':'1/3', ashabah:false });
+        totalFurud += r;
+      }
+
+      // ── 3. AYAH ───────────────────────────────────
+      if (punya_ayah) {
+        if (punya_anak || punya_cucu) {
+          // furud 1/6 + sisa (ashabah bil ghair)
+          penerima.push({ nama:'Ayah', n:1, dasar:'An-Nisa 4:11 (ada anak — furud + sisa)', ratio:1/6, frac:'1/6 + sisa', ashabah:true });
+          totalFurud += 1/6;
+        } else {
+          // ashabah murni
+          penerima.push({ nama:'Ayah', n:1, dasar:'An-Nisa 4:11 (tidak ada anak — ashabah)', ratio:0, frac:'Sisa', ashabah:true });
+        }
+      }
+
+      // ── 4. KAKEK (jika tidak ada ayah) ───────────
+      if (punya_kakek && !punya_ayah) {
+        if (punya_anak||punya_cucu) {
+          penerima.push({ nama:'Kakek', n:1, dasar:'Pengganti ayah (ada anak)', ratio:1/6, frac:'1/6', ashabah:false });
+          totalFurud += 1/6;
+        } else {
+          penerima.push({ nama:'Kakek', n:1, dasar:'Pengganti ayah (tidak ada anak — ashabah)', ratio:0, frac:'Sisa', ashabah:true });
+        }
+      }
+
+      // ── 5. NENEK (jika tidak ada ibu) ────────────
+      if (punya_nenek && !punya_ibu) {
+        penerima.push({ nama:'Nenek', n:1, dasar:'1/6 (tidak ada ibu)', ratio:1/6, frac:'1/6', ashabah:false });
+        totalFurud += 1/6;
+      }
+
+      // ── 6. ANAK PEREMPUAN (furud, jika tidak ada anak laki) ──
+      if (punya_anak_perempuan && !punya_anak_laki) {
+        let r, frac;
+        if (n_anak_perempuan === 1) { r = 1/2; frac = '1/2'; }
+        else { r = 2/3; frac = '2/3'; }
+        const rPerOrang = r / n_anak_perempuan;
+        penerima.push({ nama:`Anak Perempuan (×${n_anak_perempuan})`, n:n_anak_perempuan, dasar:'An-Nisa 4:11', ratio:r, frac, ashabah:false });
+        totalFurud += r;
+      }
+
+      // ── 7. ANAK LAKI + ANAK PEREMPUAN (ashabah, 2:1) ──
+      if (punya_anak_laki) {
+        const totalUnit = n_anak_laki * 2 + (punya_anak_perempuan ? n_anak_perempuan : 0);
+        penerima.push({
+          nama: `Anak Laki-laki (×${n_anak_laki})`,
+          n: n_anak_laki,
+          dasar: 'An-Nisa 4:11 — ashabah (bagian 2x anak perempuan)',
+          ratio: 0, frac: 'Sisa (2 bagian)', ashabah: true,
+          unitShare: 2, totalUnit
+        });
+        if (punya_anak_perempuan) {
+          penerima.push({
+            nama: `Anak Perempuan (×${n_anak_perempuan})`,
+            n: n_anak_perempuan,
+            dasar: 'An-Nisa 4:11 — ashabah bersama anak laki (1 bagian)',
+            ratio: 0, frac: 'Sisa (1 bagian)', ashabah: true,
+            unitShare: 1, totalUnit
+          });
+        }
+      }
+
+      // ── 8. CUCU (jika tidak ada anak) ────────────
+      if (!punya_anak && punya_cucu) {
+        if (punya_cucu_laki) {
+          const totalUnit = n_cucu_laki*2 + (punya_cucu_perempuan?n_cucu_perempuan:0);
+          penerima.push({ nama:`Cucu Laki-laki (×${n_cucu_laki})`, n:n_cucu_laki, dasar:'Pengganti anak laki (ashabah)', ratio:0, frac:'Sisa (2 bagian)', ashabah:true, unitShare:2, totalUnit });
+          if (punya_cucu_perempuan) {
+            penerima.push({ nama:`Cucu Perempuan (×${n_cucu_perempuan})`, n:n_cucu_perempuan, dasar:'Ashabah bersama cucu laki', ratio:0, frac:'Sisa (1 bagian)', ashabah:true, unitShare:1, totalUnit });
+          }
+        } else if (punya_cucu_perempuan) {
+          let r, frac;
+          if (n_cucu_perempuan===1) { r=1/2; frac='1/2'; }
+          else { r=2/3; frac='2/3'; }
+          penerima.push({ nama:`Cucu Perempuan (×${n_cucu_perempuan})`, n:n_cucu_perempuan, dasar:'Pengganti anak perempuan', ratio:r, frac, ashabah:false });
+          totalFurud += r;
+        }
+      }
+
+      // ── 9. SAUDARA (jika tidak ada anak, cucu, ayah) ──
+      const adaPemblokSaudara = punya_anak || punya_cucu || punya_ayah;
+      if (!adaPemblokSaudara) {
+        if (punya_sdra_laki) {
+          const totalUnit = n_sdra_laki*2 + (punya_sdri_perempuan?n_sdri_perempuan:0);
+          penerima.push({ nama:`Saudara Kandung Laki (×${n_sdra_laki})`, n:n_sdra_laki, dasar:'An-Nisa 4:176 — ashabah', ratio:0, frac:'Sisa (2 bagian)', ashabah:true, unitShare:2, totalUnit });
+          if (punya_sdri_perempuan) {
+            penerima.push({ nama:`Saudara Kandung Perempuan (×${n_sdri_perempuan})`, n:n_sdri_perempuan, dasar:'An-Nisa 4:176 — ashabah bersama', ratio:0, frac:'Sisa (1 bagian)', ashabah:true, unitShare:1, totalUnit });
+          }
+        } else if (punya_sdri_perempuan && !punya_sdra_laki) {
+          let r, frac;
+          if (n_sdri_perempuan===1) { r=1/2; frac='1/2'; }
+          else { r=2/3; frac='2/3'; }
+          penerima.push({ nama:`Saudara Kandung Perempuan (×${n_sdri_perempuan})`, n:n_sdri_perempuan, dasar:'An-Nisa 4:176', ratio:r, frac, ashabah:false });
+          totalFurud += r;
+        }
+      }
+
+      // ── HITUNG SISA untuk Ashabah ─────────────────
+      let sisa = Math.max(0, 1 - totalFurud);
+
+      // Cek apakah ada ashabah
+      const ashabahList = penerima.filter(p => p.ashabah);
+
+      // Jika ada ayah ashabah bil ghair (ada anak), sisa setelah furud ke ayah
+      // Jika tidak ada ashabah, sisa dikembalikan (radd) ke ashab furud
+      let warnings = [];
+      if (sisa < -0.0001) {
+        warnings.push('<strong>⚠ 'Aul (kekurangan):</strong> Total bagian furud melebihi harta. Setiap bagian dikurangi secara proporsional (metode 'aul).');
+        // apply 'aul: scale all furud proportionally
+        const scale = 1 / totalFurud;
+        penerima.forEach(p => { if (!p.ashabah) p.ratio *= scale; });
+        sisa = 0;
+      }
+
+      // Distribusi sisa ke ashabah
+      if (ashabahList.length > 0 && sisa > 0.0001) {
+        // group by totalUnit to handle 2:1 distribution
+        ashabahList.forEach(p => {
+          if (p.unitShare !== undefined) {
+            p.ratio = sisa * (p.unitShare * p.n / p.totalUnit);
+          } else {
+            // single ashabah (ayah/kakek)
+            p.ratio += sisa;
+            sisa = 0;
+          }
+        });
+        // recalc sisa after distributing to unitShare ashabah
+        const ashabahTotal = ashabahList.reduce((s,p)=>s+p.ratio,0);
+      } else if (ashabahList.length === 0 && sisa > 0.0001) {
+        warnings.push('<strong>Radd:</strong> Tidak ada ashabah. Sisa harta dikembalikan ke ashab furud secara proporsional.');
+        if (penerima.length > 0) {
+          const totalR = penerima.reduce((s,p)=>s+p.ratio,0);
+          penerima.forEach(p => { p.ratio += sisa * (p.ratio / totalR); });
+        }
+      }
+
+      // ── RENDER ────────────────────────────────────
+      document.getElementById('res-total').textContent = fmt(H);
+      document.getElementById('res-warning').innerHTML = warnings.map(w=>`<div class="info-box">${w}</div>`).join('');
+
+      const tbody = document.getElementById('res-body');
+      tbody.innerHTML = '';
+
+      const maxRatio = Math.max(...penerima.map(p=>p.ratio));
+
+      penerima.forEach(p => {
+        if (p.ratio <= 0) return;
+        const nominal = p.ratio * H;
+        const pct = maxRatio > 0 ? (p.ratio / maxRatio * 100).toFixed(1) : 0;
+        const pctTotal = (p.ratio * 100).toFixed(1);
+        const tr = document.createElement('tr');
+        if (p.ashabah) tr.classList.add('ashabah-row');
+        tr.innerHTML = `
+          <td>
+            <div class="ahli-name">${p.nama}</div>
+            <div class="ahli-dasar">${p.dasar}</div>
+          </td>
+          <td><span class="frac-badge">${p.frac}</span><br><small style="color:var(--muted);font-size:0.75rem">${pctTotal}%</small></td>
+          <td><span class="nominal">${fmt(nominal)}</span></td>
+          <td>
+            <div class="bar-wrap"><div class="bar-fill" style="width:${pct}%"></div></div>
+            <small style="color:var(--muted);font-size:0.75rem">${pctTotal}% dari total</small>
+          </td>`;
+        tbody.appendChild(tr);
+      });
+
+      if (penerima.filter(p=>p.ratio>0).length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--muted);padding:1.5rem">Tidak ada ahli waris yang memenuhi syarat.</td></tr>';
+      }
+
+      document.getElementById('hasil').style.display = 'block';
+      document.getElementById('hasil').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  </script>
+
+</body>
+</html>
