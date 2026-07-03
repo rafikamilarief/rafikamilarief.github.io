@@ -574,7 +574,7 @@
       // Jika tidak ada ashabah, sisa dikembalikan (radd) ke ashab furud
       let warnings = [];
       if (sisa < -0.0001) {
-        warnings.push('<strong>⚠ 'Aul (kekurangan):</strong> Total bagian furud melebihi harta. Setiap bagian dikurangi secara proporsional (metode 'aul).');
+        warnings.push('<strong>&#9888; Aul (kekurangan):</strong> Total bagian furud melebihi harta. Setiap bagian dikurangi secara proporsional (metode aul).');
         // apply 'aul: scale all furud proportionally
         const scale = 1 / totalFurud;
         penerima.forEach(p => { if (!p.ashabah) p.ratio *= scale; });
