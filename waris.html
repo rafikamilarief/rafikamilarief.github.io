@@ -410,196 +410,226 @@
       const H = parseFloat(document.getElementById('harta').value);
       if (!H || H <= 0) { alert('Masukkan total harta warisan terlebih dahulu.'); return; }
 
-      // Kumpulkan ahli waris
-      const punya_anak_laki     = ck('ck_anak_laki');
-      const punya_anak_perempuan= ck('ck_anak_perempuan');
-      const punya_anak          = punya_anak_laki || punya_anak_perempuan;
-      const punya_cucu_laki     = ck('ck_cucu_laki');
-      const punya_cucu_perempuan= ck('ck_cucu_perempuan');
-      const punya_cucu          = punya_cucu_laki || punya_cucu_perempuan;
-      const punya_ayah          = ck('ck_ayah');
-      const punya_ibu           = ck('ck_ibu');
-      const punya_kakek         = ck('ck_kakek');
-      const punya_nenek         = ck('ck_nenek');
-      const punya_suami         = ck('ck_suami');
-      const punya_istri         = ck('ck_istri');
-      const punya_sdra_laki     = ck('ck_sdra_laki');
-      const punya_sdri_perempuan= ck('ck_sdri_perempuan');
+      // ── Baca input ─────────────────────────────────
+      const punya_anak_laki      = ck('ck_anak_laki');
+      const punya_anak_perempuan = ck('ck_anak_perempuan');
+      const punya_anak           = punya_anak_laki || punya_anak_perempuan;
+      const punya_cucu_laki      = ck('ck_cucu_laki');
+      const punya_cucu_perempuan = ck('ck_cucu_perempuan');
+      const punya_cucu           = punya_cucu_laki || punya_cucu_perempuan;
+      const punya_ayah           = ck('ck_ayah');
+      const punya_ibu            = ck('ck_ibu');
+      const punya_kakek          = ck('ck_kakek');
+      const punya_nenek          = ck('ck_nenek');
+      const punya_suami          = ck('ck_suami');
+      const punya_istri          = ck('ck_istri');
+      const punya_sdra_laki      = ck('ck_sdra_laki');
+      const punya_sdri_perempuan = ck('ck_sdri_perempuan');
 
-      const n_anak_laki     = punya_anak_laki      ? num('n_anak_laki')      : 0;
-      const n_anak_perempuan= punya_anak_perempuan ? num('n_anak_perempuan') : 0;
-      const n_cucu_laki     = punya_cucu_laki      ? num('n_cucu_laki')      : 0;
-      const n_cucu_perempuan= punya_cucu_perempuan ? num('n_cucu_perempuan') : 0;
-      const n_istri         = punya_istri          ? num('n_istri')          : 0;
-      const n_sdra_laki     = punya_sdra_laki      ? num('n_sdra_laki')      : 0;
-      const n_sdri_perempuan= punya_sdri_perempuan ? num('n_sdri_perempuan') : 0;
+      const n_anak_laki      = punya_anak_laki      ? num('n_anak_laki')      : 0;
+      const n_anak_perempuan = punya_anak_perempuan ? num('n_anak_perempuan') : 0;
+      const n_cucu_laki      = punya_cucu_laki      ? num('n_cucu_laki')      : 0;
+      const n_cucu_perempuan = punya_cucu_perempuan ? num('n_cucu_perempuan') : 0;
+      const n_istri          = punya_istri          ? num('n_istri')          : 0;
+      const n_sdra_laki      = punya_sdra_laki      ? num('n_sdra_laki')      : 0;
+      const n_sdri_perempuan = punya_sdri_perempuan ? num('n_sdri_perempuan') : 0;
 
-      // Daftar penerima: {nama, dasar, bagianFrac, nominalRatio, ashabah}
-      let penerima = [];
-      let sisaRatio = 1.0; // dari total H
-      let totalFurud = 0;
+      let penerima   = [];
+      let ashobah    = 1.0;   // sisa setelah furud diambil (mengikuti variabel ashobah di PAS-03)
+      let warnings   = [];
 
-      // ── 1. SUAMI / ISTRI ──────────────────────────
-      if (punya_suami) {
-        const r = punya_anak || punya_cucu ? 1/4 : 1/2;
-        const dasar = punya_anak||punya_cucu ? 'An-Nisa 4:12 (ada anak/cucu)' : 'An-Nisa 4:12 (tidak ada anak)';
-        penerima.push({ nama:'Suami', n:1, dasar, ratio: r, frac: punya_anak||punya_cucu?'1/4':'1/2', ashabah:false });
-        totalFurud += r;
+      // helper: kurangi ashobah dan catat penerima furud
+      function addFurud(nama, n, dasar, frac, bagian, isSpouse) {
+        penerima.push({ nama, n, dasar, frac, ratio: bagian, ashabah: false, isSpouse: !!isSpouse });
+        ashobah -= bagian;
       }
+
+      // ── 1. ISTRI ──────────────────────────────────
+      // Mengikuti hitungBagian() PAS-03 main.c baris 63-69
       if (punya_istri) {
-        const r = (punya_anak||punya_cucu ? 1/8 : 1/4) / n_istri; // dibagi rata antar istri
-        const rTotal = punya_anak||punya_cucu ? 1/8 : 1/4;
-        const frac = punya_anak||punya_cucu ? '1/8' : '1/4';
-        const dasar = punya_anak||punya_cucu ? 'An-Nisa 4:12 (ada anak/cucu)' : 'An-Nisa 4:12 (tidak ada anak)';
+        const rTotal = (punya_anak || punya_cucu) ? 1/8 : 1/4;
+        const frac   = (punya_anak || punya_cucu) ? '1/8' : '1/4';
+        const dasar  = (punya_anak || punya_cucu) ? 'An-Nisa 4:12 (ada anak/cucu)' : 'An-Nisa 4:12 (tidak ada anak)';
         if (n_istri === 1) {
-          penerima.push({ nama:'Istri', n:1, dasar, ratio: rTotal, frac, ashabah:false });
+          addFurud('Istri', 1, dasar, frac, rTotal, true);
         } else {
-          for (let i=1; i<=n_istri; i++) {
-            penerima.push({ nama:`Istri ke-${i}`, n:1, dasar:`${frac} dibagi ${n_istri} istri`, ratio: r, frac:`${frac}÷${n_istri}`, ashabah:false });
+          const rPer = rTotal / n_istri;
+          for (let i = 1; i <= n_istri; i++) {
+            addFurud(`Istri ke-${i}`, 1, `${frac} dibagi ${n_istri} istri`, `${frac}/${n_istri}`, rPer, true);
           }
         }
-        totalFurud += rTotal;
       }
 
-      // ── 2. IBU ────────────────────────────────────
-      if (punya_ibu) {
-        const banyakSaudara = (punya_sdra_laki?n_sdra_laki:0) + (punya_sdri_perempuan?n_sdri_perempuan:0);
-        const r = (punya_anak || punya_cucu || banyakSaudara>=2) ? 1/6 : 1/3;
-        const dasar = (punya_anak||punya_cucu) ? 'An-Nisa 4:11 (ada anak)' : banyakSaudara>=2 ? 'An-Nisa 4:11 (ada 2+ saudara)' : 'An-Nisa 4:11 (1/3)';
-        penerima.push({ nama:'Ibu', n:1, dasar, ratio:r, frac: r===1/6?'1/6':'1/3', ashabah:false });
-        totalFurud += r;
+      // ── 2. SUAMI ──────────────────────────────────
+      // Mengikuti PAS-03 main.c baris 73-80
+      if (punya_suami) {
+        const r     = (punya_anak || punya_cucu) ? 1/4 : 1/2;
+        const frac  = (punya_anak || punya_cucu) ? '1/4' : '1/2';
+        const dasar = (punya_anak || punya_cucu) ? 'An-Nisa 4:12 (ada anak/cucu)' : 'An-Nisa 4:12 (tidak ada anak)';
+        addFurud('Suami', 1, dasar, frac, r, true);
       }
 
-      // ── 3. AYAH ───────────────────────────────────
+      // ── 3. BAPAK ──────────────────────────────────
+      // Mengikuti PAS-03 main.c baris 83-92 (termasuk kasus Gharrawain)
       if (punya_ayah) {
         if (punya_anak || punya_cucu) {
-          // furud 1/6 + sisa (ashabah bil ghair)
-          penerima.push({ nama:'Ayah', n:1, dasar:'An-Nisa 4:11 (ada anak — furud + sisa)', ratio:1/6, frac:'1/6 + sisa', ashabah:true });
-          totalFurud += 1/6;
+          // Ada anak: dapat 1/6 furud, sisanya ashabah
+          addFurud('Ayah', 1, 'An-Nisa 4:11 (ada anak — 1/6 + sisa)', '1/6 + sisa', 1/6, false);
+          // Ayah juga ashabah — ditandai khusus
+          penerima[penerima.length-1].ashabahBilGhair = true;
+        } else if (!punya_anak && !punya_cucu && punya_ibu && punya_istri) {
+          // Kasus Gharrawain: Bapak + Ibu + Istri (tanpa anak)
+          // Bapak dapat 1/2 dari sisa setelah istri
+          addFurud('Ayah', 1, 'Gharrawain: An-Nisa 4:11 (bapak+ibu+istri tanpa anak)', '1/2 sisa', 0, false);
+          penerima[penerima.length-1].gharrawainBapak = true;
         } else {
-          // ashabah murni
-          penerima.push({ nama:'Ayah', n:1, dasar:'An-Nisa 4:11 (tidak ada anak — ashabah)', ratio:0, frac:'Sisa', ashabah:true });
+          // Tidak ada anak, tidak ada kasus gharrawain — ashabah murni
+          penerima.push({ nama:'Ayah', n:1, dasar:'An-Nisa 4:11 (tidak ada anak — ashabah)', frac:'Sisa', ratio:0, ashabah:true });
         }
       }
 
-      // ── 4. KAKEK (jika tidak ada ayah) ───────────
+      // ── 4. IBU ────────────────────────────────────
+      // Mengikuti PAS-03 main.c baris 95-105 (termasuk kasus Gharrawain)
+      if (punya_ibu) {
+        const banyakSaudara = (punya_sdra_laki ? n_sdra_laki : 0) + (punya_sdri_perempuan ? n_sdri_perempuan : 0);
+        if (punya_anak || punya_cucu) {
+          addFurud('Ibu', 1, 'An-Nisa 4:11 (ada anak)', '1/6', 1/6, false);
+        } else if (!punya_anak && !punya_cucu && punya_ayah && punya_istri) {
+          // Kasus Gharrawain: Ibu dapat 1/4 dari sisa setelah istri
+          addFurud('Ibu', 1, 'Gharrawain: An-Nisa 4:11 (bapak+ibu+istri tanpa anak)', '1/4 sisa', 0, false);
+          penerima[penerima.length-1].gharrawainIbu = true;
+        } else if (banyakSaudara >= 2) {
+          addFurud('Ibu', 1, 'An-Nisa 4:11 (ada 2+ saudara)', '1/6', 1/6, false);
+        } else {
+          addFurud('Ibu', 1, 'An-Nisa 4:11 (tidak ada anak)', '1/3', 1/3, false);
+        }
+      }
+
+      // ── 5. KAKEK (pengganti ayah jika tidak ada) ──
       if (punya_kakek && !punya_ayah) {
-        if (punya_anak||punya_cucu) {
-          penerima.push({ nama:'Kakek', n:1, dasar:'Pengganti ayah (ada anak)', ratio:1/6, frac:'1/6', ashabah:false });
-          totalFurud += 1/6;
+        if (punya_anak || punya_cucu) {
+          addFurud('Kakek', 1, 'Pengganti ayah — ada anak (1/6)', '1/6', 1/6, false);
+          penerima[penerima.length-1].ashabahBilGhair = true;
         } else {
-          penerima.push({ nama:'Kakek', n:1, dasar:'Pengganti ayah (tidak ada anak — ashabah)', ratio:0, frac:'Sisa', ashabah:true });
+          penerima.push({ nama:'Kakek', n:1, dasar:'Pengganti ayah — ashabah', frac:'Sisa', ratio:0, ashabah:true });
         }
       }
 
-      // ── 5. NENEK (jika tidak ada ibu) ────────────
+      // ── 6. NENEK (pengganti ibu jika tidak ada) ───
       if (punya_nenek && !punya_ibu) {
-        penerima.push({ nama:'Nenek', n:1, dasar:'1/6 (tidak ada ibu)', ratio:1/6, frac:'1/6', ashabah:false });
-        totalFurud += 1/6;
+        addFurud('Nenek', 1, '1/6 (tidak ada ibu)', '1/6', 1/6, false);
       }
 
-      // ── 6. ANAK PEREMPUAN (furud, jika tidak ada anak laki) ──
+      // ── 7. ANAK PEREMPUAN saja (furud, tanpa anak laki) ──
+      // Mengikuti PAS-03 warits.h baris 108-121
       if (punya_anak_perempuan && !punya_anak_laki) {
         let r, frac;
         if (n_anak_perempuan === 1) { r = 1/2; frac = '1/2'; }
-        else { r = 2/3; frac = '2/3'; }
-        const rPerOrang = r / n_anak_perempuan;
-        penerima.push({ nama:`Anak Perempuan (×${n_anak_perempuan})`, n:n_anak_perempuan, dasar:'An-Nisa 4:11', ratio:r, frac, ashabah:false });
-        totalFurud += r;
+        else                        { r = 2/3; frac = '2/3'; }
+        addFurud(`Anak Perempuan (x${n_anak_perempuan})`, n_anak_perempuan, 'An-Nisa 4:11', frac, r, false);
       }
 
-      // ── 7. ANAK LAKI + ANAK PEREMPUAN (ashabah, 2:1) ──
+      // ── 8. ANAK LAKI (ashabah) ────────────────────
+      // Mengikuti hitungAshobah() PAS-03 warits.h baris 120-143
       if (punya_anak_laki) {
         const totalUnit = n_anak_laki * 2 + (punya_anak_perempuan ? n_anak_perempuan : 0);
         penerima.push({
-          nama: `Anak Laki-laki (×${n_anak_laki})`,
-          n: n_anak_laki,
-          dasar: 'An-Nisa 4:11 — ashabah (bagian 2x anak perempuan)',
-          ratio: 0, frac: 'Sisa (2 bagian)', ashabah: true,
-          unitShare: 2, totalUnit
+          nama: `Anak Laki-laki (x${n_anak_laki})`, n: n_anak_laki,
+          dasar: 'An-Nisa 4:11 — ashabah (2x bagian anak perempuan)',
+          frac: 'Sisa (2 unit)', ratio: 0, ashabah: true, unitShare: 2, totalUnit
         });
         if (punya_anak_perempuan) {
           penerima.push({
-            nama: `Anak Perempuan (×${n_anak_perempuan})`,
-            n: n_anak_perempuan,
-            dasar: 'An-Nisa 4:11 — ashabah bersama anak laki (1 bagian)',
-            ratio: 0, frac: 'Sisa (1 bagian)', ashabah: true,
-            unitShare: 1, totalUnit
+            nama: `Anak Perempuan (x${n_anak_perempuan})`, n: n_anak_perempuan,
+            dasar: 'An-Nisa 4:11 — ashabah bersama anak laki (1 unit)',
+            frac: 'Sisa (1 unit)', ratio: 0, ashabah: true, unitShare: 1, totalUnit
           });
         }
       }
 
-      // ── 8. CUCU (jika tidak ada anak) ────────────
+      // ── 9. CUCU (pengganti anak jika tidak ada anak) ──
       if (!punya_anak && punya_cucu) {
         if (punya_cucu_laki) {
-          const totalUnit = n_cucu_laki*2 + (punya_cucu_perempuan?n_cucu_perempuan:0);
-          penerima.push({ nama:`Cucu Laki-laki (×${n_cucu_laki})`, n:n_cucu_laki, dasar:'Pengganti anak laki (ashabah)', ratio:0, frac:'Sisa (2 bagian)', ashabah:true, unitShare:2, totalUnit });
+          const totalUnit = n_cucu_laki * 2 + (punya_cucu_perempuan ? n_cucu_perempuan : 0);
+          penerima.push({ nama:`Cucu Laki-laki (x${n_cucu_laki})`, n:n_cucu_laki, dasar:'Pengganti anak laki — ashabah', frac:'Sisa (2 unit)', ratio:0, ashabah:true, unitShare:2, totalUnit });
           if (punya_cucu_perempuan) {
-            penerima.push({ nama:`Cucu Perempuan (×${n_cucu_perempuan})`, n:n_cucu_perempuan, dasar:'Ashabah bersama cucu laki', ratio:0, frac:'Sisa (1 bagian)', ashabah:true, unitShare:1, totalUnit });
+            penerima.push({ nama:`Cucu Perempuan (x${n_cucu_perempuan})`, n:n_cucu_perempuan, dasar:'Ashabah bersama cucu laki', frac:'Sisa (1 unit)', ratio:0, ashabah:true, unitShare:1, totalUnit });
           }
-        } else if (punya_cucu_perempuan) {
+        } else {
           let r, frac;
-          if (n_cucu_perempuan===1) { r=1/2; frac='1/2'; }
-          else { r=2/3; frac='2/3'; }
-          penerima.push({ nama:`Cucu Perempuan (×${n_cucu_perempuan})`, n:n_cucu_perempuan, dasar:'Pengganti anak perempuan', ratio:r, frac, ashabah:false });
-          totalFurud += r;
+          if (n_cucu_perempuan === 1) { r = 1/2; frac = '1/2'; }
+          else                        { r = 2/3; frac = '2/3'; }
+          addFurud(`Cucu Perempuan (x${n_cucu_perempuan})`, n_cucu_perempuan, 'Pengganti anak perempuan', frac, r, false);
         }
       }
 
-      // ── 9. SAUDARA (jika tidak ada anak, cucu, ayah) ──
+      // ── 10. SAUDARA (diblokir oleh anak/cucu/ayah) ──
       const adaPemblokSaudara = punya_anak || punya_cucu || punya_ayah;
       if (!adaPemblokSaudara) {
         if (punya_sdra_laki) {
-          const totalUnit = n_sdra_laki*2 + (punya_sdri_perempuan?n_sdri_perempuan:0);
-          penerima.push({ nama:`Saudara Kandung Laki (×${n_sdra_laki})`, n:n_sdra_laki, dasar:'An-Nisa 4:176 — ashabah', ratio:0, frac:'Sisa (2 bagian)', ashabah:true, unitShare:2, totalUnit });
+          const totalUnit = n_sdra_laki * 2 + (punya_sdri_perempuan ? n_sdri_perempuan : 0);
+          penerima.push({ nama:`Saudara Kandung Laki (x${n_sdra_laki})`, n:n_sdra_laki, dasar:'An-Nisa 4:176 — ashabah', frac:'Sisa (2 unit)', ratio:0, ashabah:true, unitShare:2, totalUnit });
           if (punya_sdri_perempuan) {
-            penerima.push({ nama:`Saudara Kandung Perempuan (×${n_sdri_perempuan})`, n:n_sdri_perempuan, dasar:'An-Nisa 4:176 — ashabah bersama', ratio:0, frac:'Sisa (1 bagian)', ashabah:true, unitShare:1, totalUnit });
+            penerima.push({ nama:`Saudara Kandung Perempuan (x${n_sdri_perempuan})`, n:n_sdri_perempuan, dasar:'An-Nisa 4:176 — ashabah bersama', frac:'Sisa (1 unit)', ratio:0, ashabah:true, unitShare:1, totalUnit });
           }
-        } else if (punya_sdri_perempuan && !punya_sdra_laki) {
+        } else if (punya_sdri_perempuan) {
           let r, frac;
-          if (n_sdri_perempuan===1) { r=1/2; frac='1/2'; }
-          else { r=2/3; frac='2/3'; }
-          penerima.push({ nama:`Saudara Kandung Perempuan (×${n_sdri_perempuan})`, n:n_sdri_perempuan, dasar:'An-Nisa 4:176', ratio:r, frac, ashabah:false });
-          totalFurud += r;
+          if (n_sdri_perempuan === 1) { r = 1/2; frac = '1/2'; }
+          else                        { r = 2/3; frac = '2/3'; }
+          addFurud(`Saudara Kandung Perempuan (x${n_sdri_perempuan})`, n_sdri_perempuan, 'An-Nisa 4:176', frac, r, false);
         }
       }
 
-      // ── HITUNG SISA untuk Ashabah ─────────────────
-      let sisa = Math.max(0, 1 - totalFurud);
-
-      // Cek apakah ada ashabah
-      const ashabahList = penerima.filter(p => p.ashabah);
-
-      // Jika ada ayah ashabah bil ghair (ada anak), sisa setelah furud ke ayah
-      // Jika tidak ada ashabah, sisa dikembalikan (radd) ke ashab furud
-      let warnings = [];
-      if (sisa < -0.0001) {
-        warnings.push('<strong>&#9888; Aul (kekurangan):</strong> Total bagian furud melebihi harta. Setiap bagian dikurangi secara proporsional (metode aul).');
-        // apply 'aul: scale all furud proportionally
-        const scale = 1 / totalFurud;
-        penerima.forEach(p => { if (!p.ashabah) p.ratio *= scale; });
-        sisa = 0;
+      // ── PROSES GHARRAWAIN ─────────────────────────
+      // Setelah istri diambil, sisa dibagi: bapak 2/3, ibu 1/3 (dari sisa)
+      const idxGbapak = penerima.findIndex(p => p.gharrawainBapak);
+      const idxGibu   = penerima.findIndex(p => p.gharrawainIbu);
+      if (idxGbapak !== -1 && idxGibu !== -1) {
+        const sisaGharrawain = ashobah; // sisa setelah istri
+        penerima[idxGbapak].ratio = sisaGharrawain * (2/3);
+        penerima[idxGibu].ratio   = sisaGharrawain * (1/3);
+        ashobah = 0;
       }
 
-      // Distribusi sisa ke ashabah
-      if (ashabahList.length > 0 && sisa > 0.0001) {
-        // group by totalUnit to handle 2:1 distribution
-        ashabahList.forEach(p => {
-          if (p.unitShare !== undefined) {
-            p.ratio = sisa * (p.unitShare * p.n / p.totalUnit);
+      // ── DISTRIBUSI ASHABAH ────────────────────────
+      // Mengikuti logika ashobah PAS-03 — sisa setelah semua furud
+      const sisa = Math.max(0, ashobah);
+      const ashabahList = penerima.filter(p => p.ashabah || p.ashabahBilGhair);
+
+      if (sisa < -0.0001) {
+        // Aul: furud melebihi 100% — scale proporsional
+        warnings.push('<strong>&#9888; Aul:</strong> Total bagian furud melebihi harta. Dikurangi proporsional.');
+        const totalFurud2 = penerima.filter(p => !p.ashabah).reduce((s,p) => s + p.ratio, 0);
+        const scale = 1 / totalFurud2;
+        penerima.forEach(p => { if (!p.ashabah) p.ratio *= scale; });
+      } else if (sisa > 0.0001) {
+        if (ashabahList.length > 0) {
+          // Ada ashabah — distribusikan sisa
+          ashabahList.forEach(p => {
+            if (p.ashabahBilGhair) {
+              // Ayah/kakek dengan anak: tambahkan sisa ke furud 1/6-nya
+              p.ratio += sisa;
+              // Semua sisa ke satu ashabah bil ghair (ayah/kakek)
+            } else if (p.unitShare !== undefined) {
+              p.ratio = sisa * (p.unitShare * p.n / p.totalUnit);
+            } else {
+              p.ratio += sisa;
+            }
+          });
+        } else {
+          // Tidak ada ashabah — Radd ke furud KECUALI suami/istri (mengikuti PAS-03 userInterface.h baris 24)
+          warnings.push('<strong>Radd:</strong> Sisa dikembalikan ke ashab furud (kecuali suami/istri).');
+          const furudNonSpouse = penerima.filter(p => !p.ashabah && !p.isSpouse);
+          if (furudNonSpouse.length > 0) {
+            const totalR = furudNonSpouse.reduce((s,p) => s + p.ratio, 0);
+            if (totalR > 0) {
+              furudNonSpouse.forEach(p => { p.ratio += sisa * (p.ratio / totalR); });
+            }
           } else {
-            // single ashabah (ayah/kakek)
-            p.ratio += sisa;
-            sisa = 0;
+            // Semua furud adalah suami/istri — radd ke mereka
+            const totalR = penerima.reduce((s,p) => s + p.ratio, 0);
+            if (totalR > 0) penerima.forEach(p => { p.ratio += sisa * (p.ratio / totalR); });
           }
-        });
-        // recalc sisa after distributing to unitShare ashabah
-        const ashabahTotal = ashabahList.reduce((s,p)=>s+p.ratio,0);
-      } else if (ashabahList.length === 0 && sisa > 0.0001) {
-        warnings.push('<strong>Radd:</strong> Tidak ada ashabah. Sisa harta dikembalikan ke ashab furud secara proporsional.');
-        if (penerima.length > 0) {
-          const totalR = penerima.reduce((s,p)=>s+p.ratio,0);
-          penerima.forEach(p => { p.ratio += sisa * (p.ratio / totalR); });
         }
       }
 
