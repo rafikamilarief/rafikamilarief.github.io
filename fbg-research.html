@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FBG Hydrostatic Pressure Sensor — Rafi Kamil Arief</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --accent:  #1e6df7;
+      --purple:  #7c5cd8;
+      --green:   #16a34a;
+      --bg:      #F8F9FA;
+      --white:   #ffffff;
+      --dark:    #212529;
+      --muted:   #6c757d;
+      --border:  #dee2e6;
+      --radius:  10px;
+      --shadow:  0 2px 14px rgba(0,0,0,0.07);
+    }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body { font-family: -apple-system,"Segoe UI",system-ui,sans-serif; color: var(--dark); background: var(--bg); line-height: 1.75; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    img { display: block; max-width: 100%; }
+
+    /* ── NAV ── */
+    header { background: rgba(255,255,255,0.97); border-bottom: 1px solid var(--border); position: sticky; top:0; z-index:100; }
+    .nav-inner { max-width: 860px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; height:60px; padding:0 1.5rem; }
+    .nav-back { display:flex; align-items:center; gap:.5rem; font-size:.88rem; font-weight:600; color:var(--accent); }
+    .nav-back svg { width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:2.5; stroke-linecap:round; stroke-linejoin:round; }
+    .nav-back:hover { opacity:.75; text-decoration:none; }
+    .nav-tag { font-size:.72rem; font-weight:700; background:rgba(30,109,247,.1); color:var(--accent); padding:.2rem .65rem; border-radius:20px; }
+
+    /* ── LAYOUT ── */
+    .wrap { max-width: 860px; margin: 0 auto; padding: 3rem 1.5rem 5rem; }
+
+    /* ── HERO ── */
+    .research-hero {
+      background: linear-gradient(135deg, #0d1f3c 0%, #102a55 100%);
+      border-radius: 14px;
+      padding: 3rem 2.5rem;
+      color: #fff;
+      margin-bottom: 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .research-hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: linear-gradient(rgba(30,109,247,.06) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(30,109,247,.06) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    .rh-label { font-size:.75rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:#6ea8fe; margin-bottom:.8rem; position:relative; }
+    .rh-title { font-size:clamp(1.3rem,3vw,1.9rem); font-weight:800; line-height:1.2; margin-bottom:1rem; position:relative; }
+    .rh-meta { display:flex; flex-wrap:wrap; gap:.6rem; margin-bottom:1.4rem; position:relative; }
+    .rh-pill { background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.15); color:rgba(255,255,255,.85); font-size:.78rem; font-weight:600; padding:.25rem .75rem; border-radius:20px; }
+    .rh-stats { display:flex; flex-wrap:wrap; gap:1.2rem; position:relative; }
+    .rh-stat { }
+    .rh-stat-val { font-size:1.3rem; font-weight:800; color:#fff; }
+    .rh-stat-lab { font-size:.72rem; color:rgba(255,255,255,.5); text-transform:uppercase; letter-spacing:.08em; }
+
+    /* ── ABSTRACT BOX ── */
+    .abstract-box {
+      background: var(--white); border:1px solid var(--border); border-left:4px solid var(--accent);
+      border-radius: var(--radius); padding:1.6rem 1.8rem; margin-bottom:2.5rem;
+      box-shadow: var(--shadow);
+    }
+    .abstract-box p { font-size:.93rem; color:var(--muted); line-height:1.8; }
+    .abstract-box strong { color:var(--dark); }
+
+    /* ── SECTION ── */
+    .sec { margin-bottom: 3rem; }
+    .sec-label { font-size:.74rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); margin-bottom:.45rem; }
+    .sec-title { font-size:1.35rem; font-weight:700; color:var(--dark); margin-bottom:1.1rem; padding-bottom:.6rem; border-bottom:2px solid var(--border); }
+    .sec p { font-size:.95rem; color:var(--muted); margin-bottom:.9rem; line-height:1.8; }
+    .sec p strong { color:var(--dark); }
+
+    /* ── EQUATION CARD ── */
+    .eq-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1rem; margin:1.5rem 0; }
+    .eq-card {
+      background:var(--white); border:1px solid var(--border); border-radius:var(--radius);
+      padding:1.3rem 1.5rem; box-shadow:var(--shadow);
+      transition: transform .2s, box-shadow .2s;
+    }
+    .eq-card:hover { transform:translateY(-3px); box-shadow:0 6px 20px rgba(0,0,0,.1); }
+    .eq-num { font-size:.72rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--purple); margin-bottom:.5rem; }
+    .eq-name { font-size:.88rem; font-weight:700; color:var(--dark); margin-bottom:.5rem; }
+    .eq-body {
+      background:#f4f0ff; border:1px solid rgba(124,92,216,.2);
+      border-radius:7px; padding:.6rem 1rem;
+      font-family:"Cascadia Code","Fira Code",Consolas,monospace;
+      font-size:.82rem; color:#4c1d95;
+      margin-bottom:.55rem;
+      word-break:break-all;
+    }
+    .eq-note { font-size:.8rem; color:var(--muted); line-height:1.65; }
+
+    /* screenshot placeholder for equations */
+    .eq-screenshot-note {
+      display:inline-flex; align-items:center; gap:.4rem;
+      font-size:.74rem; color:var(--purple); font-weight:600;
+      background:rgba(124,92,216,.07); border:1px solid rgba(124,92,216,.2);
+      padding:.2rem .6rem; border-radius:5px; margin-top:.4rem;
+    }
+    .eq-screenshot-note svg { width:12px; height:12px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+
+    /* ── RESULT CARDS ── */
+    .result-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:1rem; margin:1.5rem 0; }
+    .result-card {
+      background:var(--white); border:1px solid var(--border); border-radius:var(--radius);
+      padding:1.2rem 1.4rem; box-shadow:var(--shadow); text-align:center;
+    }
+    .result-card .rv { font-size:1.5rem; font-weight:800; color:var(--accent); }
+    .result-card .ru { font-size:.8rem; font-weight:600; color:var(--muted); }
+    .result-card .rl { font-size:.75rem; color:var(--muted); margin-top:.3rem; }
+
+    /* ── METHODOLOGY STEPS ── */
+    .steps { display:flex; flex-direction:column; gap:.8rem; margin:1.2rem 0; }
+    .step { display:flex; gap:1rem; align-items:flex-start; background:var(--white); border:1px solid var(--border); border-radius:var(--radius); padding:1rem 1.2rem; box-shadow:var(--shadow); }
+    .step-num { width:28px; height:28px; border-radius:50%; background:var(--accent); color:#fff; font-size:.78rem; font-weight:800; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .step-body strong { display:block; font-size:.9rem; font-weight:700; color:var(--dark); margin-bottom:.2rem; }
+    .step-body span { font-size:.85rem; color:var(--muted); line-height:1.65; }
+
+    /* ── INFO BOX ── */
+    .info-box {
+      background:#eff6ff; border:1px solid #bfdbfe; border-radius:var(--radius);
+      padding:1rem 1.2rem; font-size:.88rem; color:#1e40af;
+      margin:1.2rem 0; line-height:1.7;
+    }
+    .info-box strong { font-weight:700; }
+
+    .warn-box {
+      background:#fffbeb; border:1px solid #fde68a; border-radius:var(--radius);
+      padding:1rem 1.2rem; font-size:.88rem; color:#92400e;
+      margin:1.2rem 0; line-height:1.7;
+    }
+
+    /* ── SPEC TABLE ── */
+    .spec-table { width:100%; border-collapse:collapse; font-size:.88rem; margin:1rem 0; }
+    .spec-table th { background:var(--bg); text-align:left; padding:.55rem .85rem; border:1px solid var(--border); font-size:.76rem; font-weight:700; text-transform:uppercase; letter-spacing:.07em; color:var(--muted); }
+    .spec-table td { padding:.6rem .85rem; border:1px solid var(--border); color:var(--dark); vertical-align:top; }
+    .spec-table tr:nth-child(even) td { background:#fafafa; }
+    .spec-table td:first-child { font-weight:600; color:var(--dark); }
+
+    /* ── REFERENCES ── */
+    .ref-list { list-style:none; display:flex; flex-direction:column; gap:.55rem; }
+    .ref-list li { font-size:.82rem; color:var(--muted); line-height:1.7; padding-left:2.2rem; position:relative; }
+    .ref-list li::before { content:attr(data-n); position:absolute; left:0; top:0; font-weight:700; color:var(--accent); min-width:1.8rem; }
+    .ref-list a { color:var(--accent); }
+
+    /* ── FOOTER ── */
+    footer { text-align:center; padding:1.4rem; font-size:.82rem; color:var(--muted); border-top:1px solid var(--border); background:var(--white); margin-top:2rem; }
+    footer a { color:var(--accent); font-weight:600; }
+
+    @media (max-width:600px) {
+      .research-hero { padding:2rem 1.5rem; }
+      .rh-stats { gap:.8rem; }
+      .eq-grid { grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <header>
+    <div class="nav-inner">
+      <a class="nav-back" href="index.html">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        Back to Portfolio
+      </a>
+      <span class="nav-tag">Research</span>
+    </div>
+  </header>
+
+  <div class="wrap">
+
+    <!-- HERO -->
+    <div class="research-hero">
+      <p class="rh-label">Undergraduate Thesis · BRIN &amp; University of Indonesia</p>
+      <h1 class="rh-title">Design of a Hydrostatic Pressure Sensor System<br>for the Epipelagic Zone using Fiber Bragg Grating<br>and 304 Stainless Steel Diaphragm</h1>
+      <div class="rh-meta">
+        <span class="rh-pill">Photonics &amp; Sensing</span>
+        <span class="rh-pill">FBG · Optical Fiber</span>
+        <span class="rh-pill">ANSYS Simulation</span>
+        <span class="rh-pill">Springer LNEE · ICNERE 2026</span>
+        <span class="rh-pill">Hamamatsu, Japan</span>
+      </div>
+      <div class="rh-stats">
+        <div class="rh-stat">
+          <div class="rh-stat-val">12.09</div>
+          <div class="rh-stat-lab">pm/(kg/cm²) sensitivity ↑</div>
+        </div>
+        <div class="rh-stat">
+          <div class="rh-stat-val">0.9945</div>
+          <div class="rh-stat-lab">R² linearity (full range)</div>
+        </div>
+        <div class="rh-stat">
+          <div class="rh-stat-val">5 kg/cm²</div>
+          <div class="rh-stat-lab">target pressure (~48.7 m depth)</div>
+        </div>
+        <div class="rh-stat">
+          <div class="rh-stat-val">1550 nm</div>
+          <div class="rh-stat-lab">Bragg wavelength</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ABSTRACT -->
+    <div class="abstract-box">
+      <p style="font-size:.74rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:.6rem;">Abstract</p>
+      <p>
+        Hydrostatic pressure monitoring is critical for maritime applications including environmental inspections,
+        early detection of underwater earthquakes and tsunamis, and offshore energy systems.
+        This research proposes an <strong>FBG-based hydrostatic pressure sensor</strong> constructed using a PVC pressure chamber
+        with the FBG affixed to the underside of a thin <strong>304 stainless steel diaphragm</strong>
+        (60 mm diameter, 2 mm thick) clamped at the edge.
+        Pressure was applied from <strong>1–5 kg/cm²</strong> corresponding to ~48.7 m depth in the epipelagic zone.
+        Results demonstrated first-order sensor behaviour with sensitivity of <strong>12.09 pm/(kg/cm²)</strong>
+        and R² = 0.9679 during loading, and 12.66 pm/(kg/cm²) with R² = 0.9571 during unloading.
+        Full-range testing reached <strong>R² = 0.9945</strong> at 12.86 pm/(kg/cm²).
+      </p>
+    </div>
+
+    <!-- MOTIVATION -->
+    <div class="sec">
+      <p class="sec-label">Background</p>
+      <h2 class="sec-title">Why Monitor Hydrostatic Pressure in Indonesia?</h2>
+      <p>
+        Indonesia — the world's largest archipelagic state — has a coastline exceeding <strong>108,000 km</strong>
+        and lies at the convergence of three major tectonic plates. It records over
+        <strong>320 earthquakes of magnitude ≥ 5.0 annually</strong>, most at shallow depths below 70 km,
+        making its coastal regions highly vulnerable to tsunamis.
+      </p>
+      <p>
+        The <strong>Ina-CBT (Indonesia Cable-Based Tsunameter)</strong>, deployed in Labuan Bajo since 2022 by BRIN,
+        uses quartz-based MEMS pressure recorders. While sensitive, MEMS sensors are susceptible to
+        electromagnetic interference (EMI) and are complex for multi-point deployment.
+        <strong>FBG-based sensors</strong> address these limitations directly — immune to EMI, corrosion-resistant,
+        and capable of multiplexed sensing across a single fiber.
+      </p>
+      <div class="info-box">
+        <strong>Research context:</strong> The Java Sea averages 40–46 m depth, with over 65% of the region shallower than 50 m —
+        placing it squarely in the <strong>epipelagic zone (0–200 m)</strong>. This sensor targets exactly this operational range.
+      </div>
+    </div>
+
+    <!-- FBG THEORY -->
+    <div class="sec">
+      <p class="sec-label">Theory</p>
+      <h2 class="sec-title">Fiber Bragg Grating — Working Principle</h2>
+      <p>
+        A Fiber Bragg Grating (FBG) is formed by inducing <strong>periodic refractive index variations</strong>
+        along the core of an optical fiber. This structure selectively reflects a narrow wavelength band —
+        the <em>Bragg wavelength</em> — while transmitting all others.
+        When the fiber is subjected to strain or temperature change, the grating period shifts,
+        causing a measurable change in the reflected wavelength.
+      </p>
+      <p>
+        This research uses a <strong>Uniform FBG (UFBG)</strong> inscribed on SMF-28e single-mode fiber —
+        the most common type, producing a sharp, symmetric reflection peak ideal for pressure sensing.
+        The sensor was bonded to the center of a stainless steel diaphragm;
+        pressure-induced diaphragm deflection creates axial strain on the FBG, shifting λ<sub>B</sub>.
+      </p>
+
+      <p class="sec-label" style="margin-top:1.8rem">Key Equations</p>
+      <p style="font-size:.85rem;color:var(--muted);margin-bottom:1rem;">
+        The equations below are rendered as text for accessibility.
+        <span class="eq-screenshot-note">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          For exact typeset form, refer to the published paper (Springer LNEE, ICNERE 2026).
+        </span>
+      </p>
+
+      <div class="eq-grid">
+
+        <div class="eq-card">
+          <p class="eq-num">Eq. 1 — Pressure Definition</p>
+          <p class="eq-name">Fluid Pressure</p>
+          <div class="eq-body">P = F / A</div>
+          <p class="eq-note">Pressure as the ratio of normal force to area. SI unit: Pascal (Pa).</p>
+        </div>
+
+        <div class="eq-card">
+          <p class="eq-num">Eq. 2 — Hydrostatic Pressure</p>
+          <p class="eq-name">Pressure at Depth h</p>
+          <div class="eq-body">P = P₀ + ρgh</div>
+          <p class="eq-note">P₀ = atmospheric pressure, ρ = fluid density, g = gravitational acceleration [16].</p>
+        </div>
+
+        <div class="eq-card">
+          <p class="eq-num">Eq. 3 — Bragg Condition</p>
+          <p class="eq-name">Bragg Wavelength</p>
+          <div class="eq-body">λ_B = 2 · n_eff · Λ</div>
+          <p class="eq-note">λ_B = Bragg wavelength, n_eff = effective refractive index, Λ = grating period [22–30].</p>
+        </div>
+
+        <div class="eq-card">
+          <p class="eq-num">Eq. 4 — Wavelength Shift</p>
+          <p class="eq-name">Full Thermo-Mechanical Shift</p>
+          <div class="eq-body">Δλ_B / λ_B = (1 - p_e)·Δε + (α + ζ)·ΔT</div>
+          <p class="eq-note">p_e = photo-elastic coefficient, Δε = axial strain, α = thermal expansion, ζ = thermo-optic coefficient [31–35].</p>
+        </div>
+
+        <div class="eq-card">
+          <p class="eq-num">Eq. 5 — Isothermal Shift</p>
+          <p class="eq-name">Strain-Only (ΔT = 0)</p>
+          <div class="eq-body">Δλ_B = λ_B · (1 - p_e) · Δε</div>
+          <p class="eq-note">Simplified when temperature is constant — applies directly to this experiment at stable 25 °C lab conditions.</p>
+        </div>
+
+        <div class="eq-card">
+          <p class="eq-num">Eq. 13 — Flexural Rigidity</p>
+          <p class="eq-name">Diaphragm Stiffness</p>
+          <div class="eq-body">D = E·h³ / [12(1 - ν²)]</div>
+          <p class="eq-note">E = Young's modulus, h = thickness, ν = Poisson's ratio. Governs resistance to bending [36].</p>
+        </div>
+
+        <div class="eq-card">
+          <p class="eq-num">Eq. 14 — Max Deflection</p>
+          <p class="eq-name">Clamped Circular Diaphragm</p>
+          <div class="eq-body">w_max = q·a⁴ / (64·D)</div>
+          <p class="eq-note">q = uniform pressure, a = diaphragm radius. Gives centre deflection for clamped-edge condition [36,37].</p>
+        </div>
+
+        <div class="eq-card">
+          <p class="eq-num">Eq. 15 — Centre Strain</p>
+          <p class="eq-name">Radial Strain at r = 0</p>
+          <div class="eq-body">ε_r(0) = -3(1-ν)·q·a² / (4·E·h²)</div>
+          <p class="eq-note">Strain at the diaphragm centre where the FBG is bonded. Directly drives wavelength shift.</p>
+        </div>
+
+        <div class="eq-card">
+          <p class="eq-num">Eq. 16 — Pressure → Wavelength</p>
+          <p class="eq-name">FBG Bragg Shift from Pressure</p>
+          <div class="eq-body">Δλ_B = λ_B·(1-p_e)·[-3(1-ν)·q·a²/(4Eh²)]</div>
+          <p class="eq-note">Key design equation — links applied pressure q to measurable wavelength shift Δλ_B.</p>
+        </div>
+
+        <div class="eq-card">
+          <p class="eq-num">Eq. 17 — Inverse: Pressure</p>
+          <p class="eq-name">Recover Pressure from Δλ_B</p>
+          <div class="eq-body">q = Δλ_B · 4Eh² / [λ_B·(1-p_e)·3(1-ν)·a²]</div>
+          <p class="eq-note">Allows the sensor to directly report pressure from a measured wavelength shift. Core of the transduction chain.</p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- METHODOLOGY -->
+    <div class="sec">
+      <p class="sec-label">Methodology</p>
+      <h2 class="sec-title">Experimental Setup &amp; Procedure</h2>
+      <p>
+        All experiments were conducted at the <strong>Electronics and Instrumentation Laboratory,
+        Research Centre for Industrial Process and Manufacturing Technology, BRIN</strong>, Serpong, Banten
+        (August 2024 – June 2025).
+      </p>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <strong>Design &amp; Simulation</strong>
+            <span>Diaphragm deflection simulated using ANSYS Structural. Analytical validation via Kirchhoff-Love plate theory (Eq. 14–15). Material: 304 stainless steel (E = 193 GPa, ν = 0.29, yield strength 215 MPa).</span>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <strong>Sensor Fabrication</strong>
+            <span>Bare uniform FBG (λ_B = 1550.056 nm, BW = 0.18 nm, reflectance 90.55%) spliced with FC/APC pigtail via fusion splicer. Bonded to diaphragm centre using structural adhesive.</span>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <strong>Chamber Assembly</strong>
+            <span>2-inch AW PVC pipe chamber sealed with Loctite 577. 304 SS diaphragm (60 mm dia., 2 mm thick) clamped at flange. Optical attenuator (0–12 dB) installed to prevent saturation.</span>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <strong>Pressure Testing</strong>
+            <span>Chamber filled with water. Pressure applied via manual hydraulic pump in increments from 1–5 kg/cm² (then extended to 10 kg/cm²). Both loading and unloading phases recorded.</span>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">5</div>
+          <div class="step-body">
+            <strong>Data Acquisition &amp; Analysis</strong>
+            <span>Bragg wavelength acquired via I-MON 512 USB interrogator (range 1510–1595 nm, resolution &lt;0.5 pm) at 0.5-second intervals. Weighted Least Squares (WLS) regression applied to address heteroscedasticity.</span>
+          </div>
+        </div>
+      </div>
+
+      <p style="margin-top:1.2rem">The FBG sensor specifications used in this experiment:</p>
+      <table class="spec-table">
+        <thead><tr><th>Parameter</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td>Fiber type</td><td>SMF-28e single-mode</td></tr>
+          <tr><td>Bragg wavelength (λ_B)</td><td>1550.056 nm</td></tr>
+          <tr><td>Bandwidth (3 dB)</td><td>0.18 nm</td></tr>
+          <tr><td>Reflectance</td><td>90.55%</td></tr>
+          <tr><td>Interrogator</td><td>I-MON 512 USB, 1510–1595 nm</td></tr>
+          <tr><td>Interrogator resolution</td><td>&lt; 0.5 pm</td></tr>
+          <tr><td>Diaphragm material</td><td>304 Stainless Steel</td></tr>
+          <tr><td>Diaphragm diameter</td><td>60 mm</td></tr>
+          <tr><td>Diaphragm thickness</td><td>2 mm</td></tr>
+          <tr><td>Pressure range tested</td><td>1–10 kg/cm²</td></tr>
+          <tr><td>Equivalent depth (5 kg/cm²)</td><td>~48.7 m (epipelagic zone)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- RESULTS -->
+    <div class="sec">
+      <p class="sec-label">Results</p>
+      <h2 class="sec-title">Experimental Findings</h2>
+
+      <p>
+        The FBG sensor exhibited <strong>consistent first-order dynamic behaviour</strong> across all nine steady-state tests.
+        The Bragg wavelength stabilised within approximately <strong>80–120 seconds</strong> after each pressure step,
+        consistent with a damped first-order instrument response.
+        The time derivative of the wavelength shift followed an exponential decay,
+        confirming no overshoot and smooth convergence to equilibrium.
+      </p>
+
+      <div class="result-grid">
+        <div class="result-card">
+          <div class="rv">12.09</div>
+          <div class="ru">pm/(kg/cm²)</div>
+          <div class="rl">Sensitivity — loading phase</div>
+        </div>
+        <div class="result-card">
+          <div class="rv">0.9679</div>
+          <div class="ru">R²</div>
+          <div class="rl">Linearity — loading (WLS fit)</div>
+        </div>
+        <div class="result-card">
+          <div class="rv">12.66</div>
+          <div class="ru">pm/(kg/cm²)</div>
+          <div class="rl">Sensitivity — unloading phase</div>
+        </div>
+        <div class="result-card">
+          <div class="rv">0.9571</div>
+          <div class="ru">R²</div>
+          <div class="rl">Linearity — unloading (WLS fit)</div>
+        </div>
+        <div class="result-card">
+          <div class="rv">12.86</div>
+          <div class="ru">pm/(kg/cm²)</div>
+          <div class="rl">Sensitivity — full range (10 kg/cm²)</div>
+        </div>
+        <div class="result-card">
+          <div class="rv">0.9945</div>
+          <div class="ru">R²</div>
+          <div class="rl">Linearity — full range</div>
+        </div>
+      </div>
+
+      <p style="margin-top:1.2rem">
+        The loading regression yielded: <strong>λ_B = 0.01209·P + 1550.056</strong> (nm), where P is in kg/cm².
+        The unloading regression: <strong>λ_B = 0.01266·P + 1550.042</strong>.
+        The intercept offset between loading and unloading indicates <strong>hysteresis</strong>,
+        attributed to residual strain relaxation in the diaphragm after bolted clamping during assembly.
+      </p>
+
+      <div class="warn-box">
+        <strong>Efficiency finding:</strong> Full-range testing revealed only <strong>28.25% transduction efficiency</strong>
+        compared to theoretical sensitivity. The discrepancy is attributed to bonding compliance (adhesive layer between FBG and diaphragm),
+        splice loss in the optical path, and bending-induced attenuation.
+        This highlights the importance of rigid bonding techniques and optimised splice quality in FBG pressure sensors.
+      </div>
+    </div>
+
+    <!-- CONCLUSION -->
+    <div class="sec">
+      <p class="sec-label">Conclusion</p>
+      <h2 class="sec-title">Summary &amp; Contribution</h2>
+      <p>
+        This research demonstrated that an <strong>FBG bonded to a 304 stainless steel circular diaphragm</strong>
+        provides a reliable, repeatable hydrostatic pressure measurement suitable for shallow marine environments.
+        The sensor exhibited linear first-order behaviour across all tested pressure ranges, with high linearity (R² up to 0.9945).
+      </p>
+      <p>
+        Key contributions: (1) complete analytical model linking hydrostatic pressure to Bragg wavelength shift via plate theory (Eq. 16–17),
+        (2) ANSYS-validated diaphragm design, (3) experimental characterisation of sensitivity, hysteresis,
+        and transduction efficiency in a controlled laboratory setting,
+        and (4) demonstration of sensor applicability for Indonesia's epipelagic coastal monitoring context.
+      </p>
+      <p>
+        This work was published as a <strong>Springer Lecture Notes in Electrical Engineering (LNEE)</strong> paper
+        at the <em>6th International Conference on Nano Electronics Research and Education (ICNERE 2026)</em>,
+        presented in Hamamatsu, Shizuoka, Japan.
+      </p>
+    </div>
+
+    <!-- REFERENCES -->
+    <div class="sec">
+      <p class="sec-label">References</p>
+      <h2 class="sec-title">Bibliography</h2>
+      <ol class="ref-list">
+        <li data-n="[1]">A. Rosyidie, "Dampak Bencana Terhadap Wilayah Pesisir," <em>Jurnal Perencanaan Wilayah dan Kota</em>, vol. 17, no. 3, pp. 63–81, 2006.</li>
+        <li data-n="[2]">M. Hutomo and M. K. Moosa, "Indonesian Marine and Coastal Biodiversity," <em>Indian J Mar Sci</em>, vol. 34, no. 1, pp. 88–97, 2005.</li>
+        <li data-n="[3]">Encyclopedia Britannica, "Java Sea." [Online].</li>
+        <li data-n="[6]">S. J. Hutchings and W. D. Mooney, "The Seismicity of Indonesia and Tectonic Implications," <em>Geochemistry, Geophysics, Geosystems</em>, vol. 22, no. 9, 2021. doi: 10.1029/2021GC009812.</li>
+        <li data-n="[9]">M. A. Purwoadi et al., "Introduction to Indonesian Cable-based Subsea Tsunameter," <em>IEEE UT 2023</em>. doi: 10.1109/UT49729.2023.10103368.</li>
+        <li data-n="[12]">S. Xu et al., "Fiber Bragg grating pressure sensors: a review," <em>Optical Engineering</em>, vol. 62, no. 01, 2023. doi: 10.1117/1.oe.62.1.010902.</li>
+        <li data-n="[16]">J. Walker, D. Halliday, and R. Resnick, <em>Fundamentals of Physics</em>, 10th ed. Wiley, 2014, pp. 386–405.</li>
+        <li data-n="[22]">N. A. Madani et al., "Detection of Low Hydrostatic Pressure Using Fiber Bragg Grating Sensor," <em>International Journal of Technology</em>, vol. 14, no. 7, pp. 1527–1536, 2023. doi: 10.14716/ijtech.v14i7.6714.</li>
+        <li data-n="[31]">C. E. Campanella et al., "Fibre Bragg Grating Based Strain Sensors: Review of Technology and Applications."</li>
+        <li data-n="[32]">C. Li et al., "Diaphragm FBG pressure sensor for high precision measurement in low pressure environments," <em>Optical Fiber Technology</em>, vol. 87, 2024. doi: 10.1016/j.yofte.2024.103917.</li>
+        <li data-n="[36]">S. Timoshenko and S. Woinowsky-Krieger, <em>Theory of Plates and Shells</em>, 2nd ed. McGraw-Hill, 1959.</li>
+        <li data-n="[37]">A. C. Ugural, <em>Plates and Shells: Theory and Analysis</em>, 4th ed. CRC Press, 2018.</li>
+      </ol>
+      <p style="margin-top:1rem;font-size:.8rem;color:var(--muted);">Full reference list (37 entries) available in the published Springer LNEE paper — ICNERE 2026, Hamamatsu, Japan.</p>
+    </div>
+
+  </div>
+
+  <footer>
+    <p>
+      <a href="index.html">Rafi Kamil Arief</a> &mdash;
+      Undergraduate Thesis, University of Indonesia &amp; BRIN, 2025 &mdash;
+      Published: Springer LNEE, ICNERE 2026, Japan.
+    </p>
+    <p style="margin-top:.4rem;font-size:.72rem;color:#9ca3af;">Made with IBM Bob</p>
+  </footer>
+
+</body>
+</html>
