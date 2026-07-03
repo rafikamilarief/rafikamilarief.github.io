@@ -300,20 +300,29 @@
       <div class="eq-group">
         <p class="eq-group-title">Hydrostatic Pressure</p>
 
+        <!-- Eq 1: p = F/A -->
         <div class="eq-row">
           <div class="eq-img-wrap wide">
-            <!-- Eq 2: P = P0 + rho*g*h — rendered as clean SVG since no screenshot provided -->
-            <svg viewBox="0 0 260 44" xmlns="http://www.w3.org/2000/svg" style="height:40px;width:auto;">
-              <text x="10" y="30" font-family="Georgia, 'Times New Roman', serif" font-size="18" fill="#4c1d95">P = P</text>
-              <text x="75" y="35" font-family="Georgia, 'Times New Roman', serif" font-size="11" fill="#4c1d95">0</text>
-              <text x="84" y="30" font-family="Georgia, 'Times New Roman', serif" font-size="18" fill="#4c1d95"> + ρgh</text>
-            </svg>
+            <img src="eq_pressure_def.png" alt="p = F/A" />
+          </div>
+          <div class="eq-anno">
+            <span class="eq-num-badge">Eq. 1</span>
+            <p class="eq-name">Fluid Pressure</p>
+            <p class="eq-desc">Pressure defined as the ratio of normal force to area. SI unit: Pascal (Pa).</p>
+            <p class="eq-vars">p = pressure · F = normal force · A = area [16]</p>
+          </div>
+        </div>
+
+        <!-- Eq 2: p = p0 + rgh -->
+        <div class="eq-row">
+          <div class="eq-img-wrap wide">
+            <img src="eq_hydrostatic.png" alt="p = p₀ + ρgh" />
           </div>
           <div class="eq-anno">
             <span class="eq-num-badge">Eq. 2</span>
             <p class="eq-name">Hydrostatic Pressure at Depth</p>
             <p class="eq-desc">Total pressure at depth h in a static fluid column.</p>
-            <p class="eq-vars">P₀ = atmospheric pressure · ρ = fluid density · g = gravitational acceleration · h = depth [16]</p>
+            <p class="eq-vars">p₀ = atmospheric pressure · ρ = fluid density · g = gravitational acceleration · h = depth [16]</p>
           </div>
         </div>
       </div>
@@ -322,16 +331,10 @@
       <div class="eq-group">
         <p class="eq-group-title">Fiber Bragg Grating Sensing Equations</p>
 
+        <!-- Eq 3: λ_B = 2 n_eff Λ — screenshot -->
         <div class="eq-row">
           <div class="eq-img-wrap wide">
-            <!-- Eq 3: Bragg condition lambda_B = 2 n_eff Lambda -->
-            <svg viewBox="0 0 280 44" xmlns="http://www.w3.org/2000/svg" style="height:40px;width:auto;">
-              <text x="10" y="30" font-family="Georgia,'Times New Roman',serif" font-size="18" fill="#4c1d95">λ</text>
-              <text x="22" y="35" font-family="Georgia,'Times New Roman',serif" font-size="11" fill="#4c1d95">B</text>
-              <text x="30" y="30" font-family="Georgia,'Times New Roman',serif" font-size="18" fill="#4c1d95"> = 2 · n</text>
-              <text x="96" y="35" font-family="Georgia,'Times New Roman',serif" font-size="11" fill="#4c1d95">eff</text>
-              <text x="118" y="30" font-family="Georgia,'Times New Roman',serif" font-size="18" fill="#4c1d95"> · Λ</text>
-            </svg>
+            <img src="eq_bragg_condition.png" alt="λ_B = 2n_eff·Λ" />
           </div>
           <div class="eq-anno">
             <span class="eq-num-badge">Eq. 3</span>
@@ -341,26 +344,37 @@
           </div>
         </div>
 
-        <!-- Eq 5 screenshot: Δλ_B = λ_B(1 - Pe)Δε -->
+        <!-- Eq 4: full thermo-mechanical shift — screenshot -->
         <div class="eq-row">
           <div class="eq-img-wrap wide">
-            <img src="eq_isothermal.png" alt="Δλ_B = λ_B(1 − P_e)Δε"
-                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
-            <!-- fallback SVG if image not found -->
-            <svg viewBox="0 0 310 44" xmlns="http://www.w3.org/2000/svg" style="height:40px;width:auto;display:none">
+            <img src="eq_bragg_full.png" alt="Δλ_B = λ_B(1−P_e)Δε + λ_B(α+ζ)ΔT" />
+          </div>
+          <div class="eq-anno">
+            <span class="eq-num-badge">Eq. 4</span>
+            <p class="eq-name">Bragg Wavelength Shift — Full Form</p>
+            <p class="eq-desc">General shift equation accounting for both strain and temperature. The first term is mechanical (strain), the second is thermal.</p>
+            <p class="eq-vars">P<sub>e</sub> = photo-elastic coefficient · Δε = axial strain · α = thermal expansion · ζ = thermo-optic coefficient · ΔT = temperature change [31–35]</p>
+          </div>
+        </div>
+
+        <!-- Eq 5: isothermal (ΔT=0) — simplified from Eq 4 -->
+        <div class="eq-row">
+          <div class="eq-img-wrap wide">
+            <!-- No screenshot — SVG render -->
+            <svg viewBox="0 0 310 44" xmlns="http://www.w3.org/2000/svg" style="height:40px;width:auto;">
               <text x="6" y="30" font-family="Georgia,'Times New Roman',serif" font-size="17" fill="#4c1d95">Δλ</text>
               <text x="32" y="35" font-family="Georgia,'Times New Roman',serif" font-size="11" fill="#4c1d95">B</text>
               <text x="40" y="30" font-family="Georgia,'Times New Roman',serif" font-size="17" fill="#4c1d95"> = λ</text>
               <text x="68" y="35" font-family="Georgia,'Times New Roman',serif" font-size="11" fill="#4c1d95">B</text>
               <text x="76" y="30" font-family="Georgia,'Times New Roman',serif" font-size="17" fill="#4c1d95">(1 − P</text>
-              <text x="135" y="35" font-family="Georgia,'Times New Roman',serif" font-size="11" fill="#4c1d95">e</text>
+              <text x="136" y="35" font-family="Georgia,'Times New Roman',serif" font-size="11" fill="#4c1d95">e</text>
               <text x="143" y="30" font-family="Georgia,'Times New Roman',serif" font-size="17" fill="#4c1d95">) Δε</text>
             </svg>
           </div>
           <div class="eq-anno">
             <span class="eq-num-badge">Eq. 5</span>
             <p class="eq-name">Isothermal Bragg Wavelength Shift</p>
-            <p class="eq-desc">Simplified form when temperature is constant (ΔT = 0). The wavelength shift is directly proportional to axial strain.</p>
+            <p class="eq-desc">Simplified from Eq. 4 when ΔT = 0. Applied directly in this experiment at stable 25 °C — shift is attributed entirely to mechanical strain.</p>
             <p class="eq-vars">P<sub>e</sub> = effective photo-elastic coefficient · Δε = axial strain in fiber [31–35]</p>
           </div>
         </div>
