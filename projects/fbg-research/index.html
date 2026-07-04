@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FBG Hydrostatic Pressure Sensor | Rafi Kamil Arief</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --accent: #1e6df7;
+      --bg: #f7f9fc;
+      --white: #ffffff;
+      --dark: #1f2937;
+      --muted: #64748b;
+      --border: #d8dee8;
+      --panel: #eef4ff;
+      --radius: 8px;
+      --shadow: 0 2px 14px rgba(20, 38, 66, 0.07);
+      --max: 900px;
+    }
+
+    body {
+      font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+      color: var(--dark);
+      background: var(--bg);
+      line-height: 1.7;
+    }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(255, 255, 255, 0.97);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-inner {
+      max-width: var(--max);
+      height: 60px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .nav-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .nav-back svg {
+      width: 16px;
+      height: 16px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .nav-tag {
+      font-size: 0.74rem;
+      font-weight: 800;
+      color: var(--accent);
+      background: rgba(30, 109, 247, 0.08);
+      border: 1px solid rgba(30, 109, 247, 0.16);
+      border-radius: 999px;
+      padding: 0.22rem 0.7rem;
+    }
+
+    .wrap {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 3rem 1.5rem 4rem;
+    }
+
+    .hero {
+      color: #fff;
+      background: #0f2a4f;
+      border-radius: 12px;
+      padding: 2.5rem;
+      margin-bottom: 2.6rem;
+      box-shadow: var(--shadow);
+    }
+
+    .eyebrow {
+      font-size: 0.74rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #7db4ff;
+      margin-bottom: 0.7rem;
+    }
+
+    h1 {
+      font-size: clamp(1.55rem, 4vw, 2.2rem);
+      line-height: 1.18;
+      margin-bottom: 1rem;
+      max-width: 760px;
+    }
+
+    .hero p {
+      max-width: 720px;
+      color: rgba(255, 255, 255, 0.78);
+      font-size: 0.95rem;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+      margin-top: 1.25rem;
+    }
+
+    .pill {
+      color: rgba(255, 255, 255, 0.88);
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 999px;
+      padding: 0.24rem 0.72rem;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .section {
+      margin-bottom: 2.3rem;
+    }
+
+    .section-label {
+      color: var(--accent);
+      font-size: 0.74rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+    }
+
+    .section-title {
+      font-size: 1.25rem;
+      line-height: 1.3;
+      margin-bottom: 0.85rem;
+      padding-bottom: 0.55rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section p {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .screenshot-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .card,
+    .equation,
+    .shot-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .card {
+      padding: 1rem;
+    }
+
+    .card strong {
+      display: block;
+      margin-bottom: 0.35rem;
+      font-size: 0.92rem;
+    }
+
+    .card span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.86rem;
+    }
+
+    .shot-card {
+      overflow: hidden;
+    }
+
+    .shot-card img {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .shot-card figcaption {
+      padding: 0.85rem 1rem;
+      color: var(--muted);
+      font-size: 0.86rem;
+    }
+
+    .shot-card figcaption strong {
+      display: block;
+      color: var(--dark);
+      font-size: 0.9rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .equation {
+      padding: 1rem 1.1rem;
+      margin-bottom: 0.9rem;
+      display: grid;
+      grid-template-columns: minmax(190px, 0.7fr) 1fr;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .formula {
+      background: var(--panel);
+      border: 1px solid rgba(30, 109, 247, 0.16);
+      border-radius: 7px;
+      padding: 0.75rem;
+      text-align: center;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1.05rem;
+      color: #153e75;
+    }
+
+    .equation h3 {
+      font-size: 0.95rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .equation p {
+      color: var(--muted);
+      font-size: 0.86rem;
+      margin: 0;
+    }
+
+    .note {
+      background: #fff7ed;
+      border: 1px solid #fed7aa;
+      border-radius: var(--radius);
+      padding: 1rem;
+      color: #9a3412;
+      font-size: 0.9rem;
+    }
+
+    footer {
+      text-align: center;
+      color: var(--muted);
+      background: var(--white);
+      border-top: 1px solid var(--border);
+      padding: 1.25rem;
+      font-size: 0.82rem;
+    }
+
+    @media (max-width: 760px) {
+      .hero { padding: 2rem 1.3rem; }
+      .grid { grid-template-columns: 1fr; }
+      .screenshot-grid { grid-template-columns: 1fr; }
+      .equation { grid-template-columns: 1fr; }
+      .nav-inner { padding: 0 1rem; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="nav-inner">
+      <a class="nav-back" href="../../index.html">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+        Back to Portfolio
+      </a>
+      <span class="nav-tag">Research Project</span>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <p class="eyebrow">Undergraduate Thesis | UI and BRIN</p>
+      <h1>Hydrostatic Pressure Sensor System using Fiber Bragg Grating and 304 Stainless Steel Diaphragm</h1>
+      <p>
+        I designed a laboratory-scale optical pressure sensing system for shallow
+        underwater monitoring. The work combines fiber optic sensing, diaphragm
+        mechanics, finite element simulation, and an analytical pressure-to-wavelength model.
+      </p>
+      <div class="pill-row">
+        <span class="pill">Fiber Bragg Grating</span>
+        <span class="pill">Hydrostatic Pressure</span>
+        <span class="pill">304 Stainless Steel</span>
+        <span class="pill">ANSYS</span>
+      </div>
+    </section>
+
+    <section class="section">
+      <p class="section-label">Background</p>
+      <h2 class="section-title">Why this project matters</h2>
+      <p>
+        Indonesia has wide shallow coastal waters and high tsunami exposure, so
+        underwater pressure monitoring is an important part of marine observation.
+        Conventional electronic pressure sensors can be affected by electromagnetic
+        interference and are less convenient for distributed sensing.
+      </p>
+      <p>
+        Fiber Bragg Grating (FBG) sensors offer a compact optical alternative:
+        they are immune to electromagnetic interference, can be multiplexed along
+        one optical fiber, and are suitable for harsh underwater environments.
+      </p>
+    </section>
+
+    <section class="section">
+      <p class="section-label">What I Worked On</p>
+      <h2 class="section-title">System concept</h2>
+      <div class="grid">
+        <div class="card">
+          <strong>Mechanical transducer</strong>
+          <span>A 304 stainless steel circular diaphragm converts water pressure into strain.</span>
+        </div>
+        <div class="card">
+          <strong>Optical sensing</strong>
+          <span>An FBG bonded to the diaphragm converts strain into Bragg wavelength shift.</span>
+        </div>
+        <div class="card">
+          <strong>Model validation</strong>
+          <span>The design was supported with analytical modeling and ANSYS simulation.</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <p class="section-label">Methodology Screenshots</p>
+      <h2 class="section-title">Selected thesis workflow slides</h2>
+      <p>
+        The screenshots below are selected from my thesis presentation and show
+        only the methodology side of the work: research scope, workflow,
+        system assembly, and mathematical modeling.
+      </p>
+      <div class="screenshot-grid">
+        <figure class="shot-card">
+          <img src="../../assets/images/fbg-methodology/methodology-slide-04.png" alt="Research scope, objectives, limitations, and methodology" />
+          <figcaption>
+            <strong>Research scope and methodology</strong>
+            Problem framing, objective, testing boundary, and planned research steps.
+          </figcaption>
+        </figure>
+        <figure class="shot-card">
+          <img src="../../assets/images/fbg-methodology/methodology-slide-08.png" alt="Research workflow part one" />
+          <figcaption>
+            <strong>Workflow and preparation</strong>
+            FBG preparation, diaphragm selection, chamber design, and initial assembly flow.
+          </figcaption>
+        </figure>
+        <figure class="shot-card">
+          <img src="../../assets/images/fbg-methodology/methodology-slide-09.png" alt="Research workflow part two" />
+          <figcaption>
+            <strong>Assembly and test setup</strong>
+            Sensor installation, chamber sealing, leak checking, and instrument configuration.
+          </figcaption>
+        </figure>
+        <figure class="shot-card">
+          <img src="../../assets/images/fbg-methodology/methodology-slide-10.png" alt="Mathematical modeling for FBG hydrostatic pressure experiment" />
+          <figcaption>
+            <strong>Mathematical model</strong>
+            Plate deflection, radial strain, and FBG wavelength-shift equations used in the design.
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section">
+      <p class="section-label">Core Equations</p>
+      <h2 class="section-title">How pressure becomes an optical signal</h2>
+
+      <article class="equation">
+        <div class="formula">p = p<sub>0</sub> + &rho;gh</div>
+        <div>
+          <h3>Hydrostatic pressure</h3>
+          <p>
+            Water pressure increases with depth. This equation defines the
+            pressure input that the diaphragm must convert into strain.
+          </p>
+        </div>
+      </article>
+
+      <article class="equation">
+        <div class="formula">&lambda;<sub>B</sub> = 2n<sub>eff</sub>&Lambda;</div>
+        <div>
+          <h3>FBG Bragg condition</h3>
+          <p>
+            The reflected wavelength depends on the effective refractive index
+            and grating period of the optical fiber.
+          </p>
+        </div>
+      </article>
+
+      <article class="equation">
+        <div class="formula">&Delta;&lambda;<sub>B</sub> = &lambda;<sub>B</sub>(1-P<sub>e</sub>)&Delta;&epsilon;</div>
+        <div>
+          <h3>Strain to wavelength shift</h3>
+          <p>
+            When the diaphragm bends, strain is transferred to the FBG and shifts
+            the reflected Bragg wavelength.
+          </p>
+        </div>
+      </article>
+
+      <article class="equation">
+        <div class="formula">D = Eh<sup>3</sup> / 12(1-&nu;<sup>2</sup>)</div>
+        <div>
+          <h3>Diaphragm flexural rigidity</h3>
+          <p>
+            This describes how material stiffness and diaphragm thickness affect
+            bending under pressure.
+          </p>
+        </div>
+      </article>
+
+      <article class="equation">
+        <div class="formula">&Delta;&lambda;<sub>B</sub> &prop; pR<sup>2</sup> / Eh<sup>2</sup></div>
+        <div>
+          <h3>Pressure-to-wavelength relation</h3>
+          <p>
+            Combining diaphragm strain theory with the FBG equation links applied
+            pressure directly to the measurable wavelength shift.
+          </p>
+        </div>
+      </article>
+    </section>
+
+    <section class="section">
+      <p class="section-label">Project Scope</p>
+      <h2 class="section-title">What the page is meant to show</h2>
+      <p>
+        This page is a compact portfolio summary. It explains the sensing problem,
+        the system I designed, and the analytical model behind it. Experimental
+        data, detailed results, and full references are intentionally omitted from
+        the public portfolio page.
+      </p>
+      <div class="note">
+        The key takeaway: I worked on an optical fiber pressure sensing system
+        that translates underwater pressure into a measurable Bragg wavelength shift.
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p><a href="../../index.html">Rafi Kamil Arief</a> | Portfolio Project Summary</p>
+  </footer>
+</body>
+</html>

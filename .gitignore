@@ -1,0 +1,11 @@
+# Raw/source working files should stay local and must not be pushed.
+*.xlsx
+*.xls
+*.xlsm
+*.docx
+*.doc
+
+# Local working folders.
+feasibility analsys/
+raw-data/
+drafts/

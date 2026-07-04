@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Feasibility Analysis | Rafi Kamil Arief</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="back-link" href="../../index.html">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+      Back to Portfolio
+    </a>
+    <span class="source-pill">Excel-based static model</span>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <p class="eyebrow">Project Investment Evaluation</p>
+      <h1>Feasibility Analysis Calculator</h1>
+      <p>
+        Kalkulator statis untuk mengevaluasi kelayakan proyek menggunakan model
+        cash flow 20 tahun dari model spreadsheet lokal: NPV, IRR, discounted payback
+        period, dan sensitivitas parameter utama.
+      </p>
+    </section>
+
+    <section class="summary-grid" aria-label="Hasil utama">
+      <article class="metric-card">
+        <span>NPV</span>
+        <strong id="npvValue">-</strong>
+        <small id="npvStatus">-</small>
+      </article>
+      <article class="metric-card">
+        <span>IRR</span>
+        <strong id="irrValue">-</strong>
+        <small>Compared with MARR</small>
+      </article>
+      <article class="metric-card">
+        <span>DPP</span>
+        <strong id="dppValue">-</strong>
+        <small>Discounted payback period</small>
+      </article>
+      <article class="metric-card">
+        <span>PV Net Cash</span>
+        <strong id="pvNetValue">-</strong>
+        <small>Total present value</small>
+      </article>
+    </section>
+
+    <section class="workspace">
+      <form class="panel inputs-panel" id="modelForm">
+        <div class="panel-head">
+          <p class="eyebrow">Inputs</p>
+          <h2>Project Assumptions</h2>
+        </div>
+
+        <div class="input-grid">
+          <label>
+            Produksi energi tahun 1-16 (MWh/tahun)
+            <input type="number" id="energyEarly" value="1400" min="0" step="10" />
+          </label>
+          <label>
+            Faktor produksi tahun 17-20
+            <input type="number" id="lateEnergyFactor" value="0.9" min="0" step="0.01" />
+          </label>
+          <label>
+            Harga jual listrik (Rp/kWh)
+            <input type="number" id="electricityPrice" value="1250" min="0" step="10" />
+          </label>
+          <label>
+            Kapasitas PLTS (kWp)
+            <input type="number" id="capacity" value="1000" min="0" step="10" />
+          </label>
+          <label>
+            Biaya investasi (Rp/Wp)
+            <input type="number" id="investmentUnit" value="11000" min="0" step="100" />
+          </label>
+          <label>
+            Biaya operasional (Rp/tahun)
+            <input type="number" id="operatingCost" value="90000000" min="0" step="1000000" />
+          </label>
+          <label>
+            Biaya pemeliharaan (Rp/tahun)
+            <input type="number" id="maintenanceCost" value="60000000" min="0" step="1000000" />
+          </label>
+          <label>
+            MARR / discount rate
+            <input type="number" id="marr" value="0.09" min="0" step="0.005" />
+          </label>
+          <label>
+            Inflasi biaya tahunan
+            <input type="number" id="inflation" value="0.06" min="0" step="0.005" />
+          </label>
+          <label>
+            Pajak penghasilan
+            <input type="number" id="taxRate" value="0.25" min="0" step="0.01" />
+          </label>
+          <label>
+            Porsi ekuitas
+            <input type="number" id="equityShare" value="0.94" min="0" max="1" step="0.01" />
+          </label>
+          <label>
+            Bunga pinjaman
+            <input type="number" id="loanRate" value="0.12" min="0" step="0.005" />
+          </label>
+        </div>
+
+        <div class="button-row">
+          <button type="button" id="resetBtn">Reset Baseline</button>
+        </div>
+      </form>
+
+      <section class="panel">
+        <div class="panel-head">
+          <p class="eyebrow">Cash Flow</p>
+          <h2>Annual Model</h2>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Tahun</th>
+                <th>Revenue</th>
+                <th>Total Cost</th>
+                <th>Tax</th>
+                <th>Net Cash Flow</th>
+                <th>PV Net Cash</th>
+              </tr>
+            </thead>
+            <tbody id="cashflowBody"></tbody>
+          </table>
+        </div>
+      </section>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <p class="eyebrow">Sensitivity</p>
+        <h2>One-at-a-Time Sensitivity</h2>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Parameter</th>
+              <th>-20% NPV</th>
+              <th>Baseline NPV</th>
+              <th>+20% NPV</th>
+              <th>IRR Range</th>
+            </tr>
+          </thead>
+          <tbody id="sensitivityBody"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Static implementation for GitHub Pages. The calculation model is implemented in JavaScript; raw workbook files are kept out of the public repository.</p>
+  </footer>
+</body>
+</html>
