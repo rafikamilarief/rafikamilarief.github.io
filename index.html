@@ -1,11 +1,11 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Rafi Kamil Arief — Electrical Engineer</title>
+  <title>Rafi Kamil Arief - Electrical Engineer</title>
   <style>
-/* ── CSS VARIABLES ─────────────────────────────── */
+/* -- CSS VARIABLES ------------------------------- */
     :root {
       --primary-color: #f2faf5;
       --accent-color:  #1e6df7;
@@ -20,7 +20,7 @@
       --max-width:     1100px;
     }
 
-    /* ── CSS RESET ─────────────────────────────────── */
+    /* -- CSS RESET ----------------------------------- */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     html { scroll-behavior: smooth; font-size: 16px; }
@@ -36,7 +36,7 @@
     a   { color: inherit; text-decoration: none; }
     ul  { list-style: none; }
 
-    /* ── UTILITY ───────────────────────────────────── */
+    /* -- UTILITY ------------------------------------- */
     .container {
       width: 100%;
       max-width: var(--max-width);
@@ -69,7 +69,7 @@
 
     section { padding: 88px 0; }
 
-    /* ── BUTTONS ───────────────────────────────────── */
+    /* -- BUTTONS ------------------------------------- */
     .btn {
       display: inline-block;
       padding: 0.7rem 1.65rem;
@@ -103,7 +103,7 @@
       transform: translateY(-2px);
     }
 
-    /* ── NAVIGATION ────────────────────────────────── */
+    /* -- NAVIGATION ---------------------------------- */
     #nav-toggle { display: none; }
 
     header {
@@ -136,7 +136,7 @@
     .nav-links {
       display: flex;
       align-items: center;
-      gap: 1.8rem;
+      gap: 1.45rem;
     }
     .nav-links a {
       font-size: 0.9rem;
@@ -150,9 +150,13 @@
       display: none;
       flex-direction: column;
       justify-content: center;
-      gap: 5px;
-      width: 32px;
-      height: 32px;
+      gap: 4px;
+      width: 40px;
+      height: 40px;
+      padding: 0 10px;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      background: var(--white);
       cursor: pointer;
     }
     .nav-hamburger span {
@@ -166,10 +170,15 @@
     @media (max-width: 768px) {
       .nav-hamburger { display: flex; }
       .nav-links {
-        position: absolute;
-        top: 64px; left: 0; right: 0;
+        position: fixed;
+        top: 72px;
+        left: 1rem;
+        right: 1rem;
+        z-index: 1001;
         background: var(--white);
-        border-bottom: 1px solid var(--border-color);
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        box-shadow: 0 16px 40px rgba(15,23,42,0.12);
         flex-direction: column;
         align-items: flex-start;
         gap: 0;
@@ -179,17 +188,19 @@
       }
       .nav-links a {
         width: 100%;
-        padding: 0.85rem 1.5rem;
+        padding: 0.95rem 1rem;
         border-bottom: 1px solid var(--bg-light);
-        font-size: 0.97rem;
+        font-size: 0.94rem;
       }
-      #nav-toggle:checked ~ .nav-links    { max-height: 420px; }
-      #nav-toggle:checked ~ .nav-hamburger span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+      .nav-links li { width: 100%; }
+      .nav-links li:last-child a { border-bottom: 0; }
+      #nav-toggle:checked ~ .nav-links    { max-height: calc(100vh - 96px); overflow-y: auto; }
+      #nav-toggle:checked ~ .nav-hamburger span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
       #nav-toggle:checked ~ .nav-hamburger span:nth-child(2) { opacity: 0; }
-      #nav-toggle:checked ~ .nav-hamburger span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+      #nav-toggle:checked ~ .nav-hamburger span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
     }
 
-    /* ── HERO ──────────────────────────────────────── */
+    /* -- HERO ---------------------------------------- */
     #home {
       background: var(--primary-color);
       padding: 96px 0 80px;
@@ -268,7 +279,7 @@
       .hero-desc { margin: 0 auto 0.9rem; }
     }
 
-    /* ── ABOUT ─────────────────────────────────────── */
+    /* -- ABOUT --------------------------------------- */
     #about { background: var(--white); }
 
     .about-text p {
@@ -293,7 +304,7 @@
       border: 1px solid var(--border-color);
     }
 
-    /* ── EDUCATION ─────────────────────────────────── */
+    /* -- EDUCATION ----------------------------------- */
     #education { background: var(--bg-light); }
 
     .edu-grid {
@@ -340,19 +351,8 @@
       margin-bottom: 0.9rem;
     }
     .edu-details { font-size: 0.88rem; color: var(--text-muted); line-height: 1.65; }
-    .edu-gpa {
-      display: inline-block;
-      margin-top: 0.7rem;
-      background: #f0fdf4;
-      border: 1px solid #bbf7d0;
-      color: #065f46;
-      font-size: 0.82rem;
-      font-weight: 700;
-      padding: 0.22rem 0.7rem;
-      border-radius: 6px;
-    }
 
-    /* ── SKILLS ────────────────────────────────────── */
+    /* -- SKILLS -------------------------------------- */
     #skills { background: var(--white); }
 
     .skills-categories {
@@ -395,7 +395,7 @@
       transform: translateY(-2px);
     }
 
-    /* ── PORTFOLIO ─────────────────────────────────── */
+    /* -- PORTFOLIO ----------------------------------- */
     #portfolio { background: var(--bg-light); }
 
     .portfolio-grid {
@@ -449,15 +449,13 @@
       margin-bottom: 1.1rem;
       line-height: 1.65;
     }
-    .portfolio-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
-    .portfolio-tag {
-      background: var(--primary-color);
+    .project-meta {
+      display: block;
+      margin-top: -0.35rem;
       color: var(--accent-color);
-      font-size: 0.73rem;
-      font-weight: 600;
-      padding: 0.22rem 0.6rem;
-      border-radius: 4px;
-      border: 1px solid rgba(30,109,247,0.15);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.01em;
     }
 
     .project-link {
@@ -479,43 +477,59 @@
       border-radius: 8px;
       overflow: hidden;
       margin-bottom: 1.1rem;
-      background: #0d1b2e;
       position: relative;
-    }
-    .vr-thumbnail svg {
-      width: 100%;
-      height: 100%;
-      display: block;
-    }
-    .vr-thumbnail-label {
-      position: absolute;
-      bottom: 10px;
-      left: 12px;
-      background: rgba(0,0,0,0.55);
-      color: #fff;
-      font-size: 0.72rem;
-      font-weight: 600;
-      padding: 0.2rem 0.6rem;
-      border-radius: 4px;
-      letter-spacing: 0.05em;
-    }
-    .vr-open-badge {
-      position: absolute;
-      top: 10px;
-      right: 12px;
-      background: var(--accent-color);
-      color: #fff;
-      font-size: 0.7rem;
-      font-weight: 700;
-      padding: 0.22rem 0.65rem;
-      border-radius: 4px;
       display: flex;
       align-items: center;
-      gap: 0.3rem;
+      justify-content: center;
+      background:
+        linear-gradient(rgba(9, 21, 35, 0.72), rgba(9, 21, 35, 0.78)),
+        radial-gradient(circle at 50% 42%, rgba(255,255,255,0.18), transparent 28%),
+        linear-gradient(135deg, #10243b 0%, #111b26 58%, #262d34 100%);
+    }
+    .vr-thumbnail::before {
+      content: "";
+      position: absolute;
+      inset: 16px 34px 26px;
+      background:
+        linear-gradient(90deg, transparent 0 18%, rgba(255,255,255,0.18) 18% 28%, transparent 28% 72%, rgba(255,255,255,0.12) 72% 82%, transparent 82%),
+        linear-gradient(rgba(255,255,255,0.12), rgba(255,255,255,0.03));
+      filter: blur(9px);
+      opacity: 0.55;
+    }
+    .dte-logo-mark {
+      position: relative;
+      z-index: 1;
+      width: min(78%, 360px);
+      color: var(--white);
+      text-align: center;
+      text-transform: uppercase;
+    }
+    .dte-logo-oval {
+      height: 86px;
+      border: 5px solid currentColor;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 16px rgba(255,255,255,0.14);
+    }
+    .dte-logo-text {
+      font-size: 4rem;
+      line-height: 1;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+    .dte-logo-subtitle {
+      display: block;
+      margin-top: 0.35rem;
+      font-size: 1.32rem;
+      line-height: 1;
+      font-weight: 500;
+      letter-spacing: 0;
     }
     .portfolio-card.vr-card { padding: 1.2rem 1.8rem 1.8rem; }
 
-    /* ── EXPERIENCE ────────────────────────────────── */
+    /* -- EXPERIENCE ---------------------------------- */
     #experience { background: var(--white); }
 
     .timeline {
@@ -577,7 +591,7 @@
       line-height: 1.6;
     }
 
-    /* ── PUBLICATION ───────────────────────────────── */
+    /* -- PUBLICATION --------------------------------- */
     #publication { background: var(--bg-light); }
 
     .pub-card {
@@ -608,7 +622,7 @@
       border-radius: 6px;
     }
 
-    /* ── ACHIEVEMENTS & CERTS ──────────────────────── */
+    /* -- ACHIEVEMENTS & CERTS ------------------------ */
     #achievements { background: var(--white); }
 
     .ach-grid {
@@ -659,7 +673,7 @@
       color: var(--text-muted);
     }
 
-    /* ── CONTACT ───────────────────────────────────── */
+    /* -- CONTACT ------------------------------------- */
     #contact { background: var(--bg-light); }
 
     .contact-inner {
@@ -731,7 +745,7 @@
       .contact-inner { grid-template-columns: 1fr; gap: 2rem; }
     }
 
-    /* ── FOOTER ────────────────────────────────────── */
+    /* -- FOOTER -------------------------------------- */
     footer {
       background: var(--text-dark);
       color: rgba(255,255,255,0.5);
@@ -760,7 +774,7 @@ document.querySelectorAll(".nav-links a").forEach((link) => {
 </head>
 <body>
 
-  <!-- ── NAVIGATION ───────────────────────────────── -->
+  <!-- -- NAVIGATION --------------------------------- -->
   <header>
     <nav>
       <a class="nav-logo" href="#home">Rafi Kamil <span>Arief</span></a>
@@ -770,10 +784,8 @@ document.querySelectorAll(".nav-links a").forEach((link) => {
       </label>
       <ul class="nav-links" role="list">
         <li><a href="#home">Home</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#education">Education</a></li>
-        <li><a href="#skills">Skills</a></li>
-        <li><a href="#portfolio">Portfolio</a></li>
+        <li><a href="#about">Profile</a></li>
+        <li><a href="#portfolio">Work</a></li>
         <li><a href="#experience">Experience</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
@@ -781,7 +793,7 @@ document.querySelectorAll(".nav-links a").forEach((link) => {
   </header>
 
 
-  <!-- ── HERO ─────────────────────────────────────── -->
+  <!-- -- HERO --------------------------------------- -->
   <section id="home">
     <div class="container">
       <div class="hero-inner">
@@ -796,7 +808,7 @@ document.querySelectorAll(".nav-links a").forEach((link) => {
             digital systems, sensor research, and engineering analysis.
           </p>
           <div class="hero-cta">
-            <a href="#portfolio" class="btn btn-primary">View Portfolio</a>
+            <a href="#portfolio" class="btn btn-primary">View Work</a>
             <a href="#contact"   class="btn btn-secondary">Contact Me</a>
           </div>
         </div>
@@ -810,7 +822,7 @@ document.querySelectorAll(".nav-links a").forEach((link) => {
   </section>
 
 
-  <!-- ── ABOUT ─────────────────────────────────────── -->
+  <!-- -- ABOUT --------------------------------------- -->
   <section id="about">
     <div class="container">
       <span class="section-label">About Me</span>
@@ -818,21 +830,21 @@ document.querySelectorAll(".nav-links a").forEach((link) => {
       <div class="about-text">
         <p>
           I am an Electrical Engineering graduate from the <strong>University of Indonesia</strong>,
-          currently in an accelerated Bachelor–Master program with a specialisation in
+          currently in an accelerated Bachelor-Master program with a specialisation in
           <strong>Electronic and Intelligent Embedded Systems</strong>.
-          My work sits at the intersection of digital hardware and applied physics —
+          My work sits at the intersection of digital hardware and applied physics -
           from designing FPGA control architectures to characterising photonic sensors in the lab.
         </p>
         <p>
           At BRIN, I developed an FBG-based hydrostatic pressure sensor validated
-          through both finite element modelling and physical experiment — work that led
+          through both finite element modelling and physical experiment - work that led
           to a <strong>Springer LNEE publication</strong> presented in Japan.
           At PLN Indonesia Power, I led a five-person team deploying Analog Signature
           Analysis for live PCB diagnostics in an industrial power environment.
         </p>
         <p>
           Beyond engineering, I have led 11-member financial audit commissions,
-          mentored incoming students, and coordinated large cross-functional teams —
+          mentored incoming students, and coordinated large cross-functional teams -
           bringing structured thinking and ownership into every role I take on.
         </p>
         <div class="about-highlights">
@@ -849,7 +861,7 @@ document.querySelectorAll(".nav-links a").forEach((link) => {
   </section>
 
 
-  <!-- ── EDUCATION ─────────────────────────────────── -->
+  <!-- -- EDUCATION ----------------------------------- -->
   <section id="education">
     <div class="container">
       <span class="section-label">Education</span>
@@ -857,25 +869,23 @@ document.querySelectorAll(".nav-links a").forEach((link) => {
       <div class="edu-grid">
 
         <div class="edu-card">
-          <p class="edu-degree">MEng — Electronic &amp; Intelligent Embedded Systems</p>
+          <p class="edu-degree">MEng - Electronic &amp; Intelligent Embedded Systems</p>
           <p class="edu-school">University of Indonesia, West Java</p>
-          <span class="edu-period">August 2025 – Present</span>
+          <span class="edu-period">August 2025 - Present</span>
           <p class="edu-details">
-            Accelerated Bachelor–Master program. Research focus on FPGA-based
+            Accelerated Bachelor-Master program. Research focus on FPGA-based
             embedded systems and digital control implementations.
           </p>
-          <span class="edu-gpa">GPA 3.95 / 4.00</span>
         </div>
 
         <div class="edu-card">
-          <p class="edu-degree">BEng — Electrical Engineering</p>
+          <p class="edu-degree">BEng - Electrical Engineering</p>
           <p class="edu-school">University of Indonesia, West Java</p>
-          <span class="edu-period">July 2021 – July 2025</span>
+          <span class="edu-period">July 2021 - July 2025</span>
           <p class="edu-details">
             Thesis: <em>Fiber Bragg Grating (FBG)-based hydrostatic pressure sensing
             system using finite element modeling and experimental validation.</em>
           </p>
-          <span class="edu-gpa">GPA 3.76 / 4.00</span>
         </div>
 
       </div>
@@ -883,13 +893,13 @@ document.querySelectorAll(".nav-links a").forEach((link) => {
   </section>
 
 
-  <!-- ── SKILLS ────────────────────────────────────── -->
+  <!-- -- SKILLS -------------------------------------- -->
   <section id="skills">
     <div class="container">
       <span class="section-label">Technical Skills</span>
       <h2 class="section-title">Tools &amp; Technologies</h2>
       <p class="section-subtitle">
-        Hardware design, firmware, simulation, and data analysis —
+        Hardware design, firmware, simulation, and data analysis -
         built through research, coursework, and industry work.
       </p>
 
@@ -931,8 +941,8 @@ document.querySelectorAll(".nav-links a").forEach((link) => {
         <div class="skill-category">
           <h3>Certificates</h3>
           <div class="skill-tags">
-            <span class="skill-tag">FPGA for Industrial Apps — L&amp;T EduTech</span>
-            <span class="skill-tag">TOEFL ITP 610/677 — ETS</span>
+            <span class="skill-tag">FPGA for Industrial Apps - L&amp;T EduTech</span>
+            <span class="skill-tag">TOEFL ITP 610/677 - ETS</span>
           </div>
         </div>
 
@@ -941,13 +951,13 @@ document.querySelectorAll(".nav-links a").forEach((link) => {
   </section>
 
 
-  <!-- ── PORTFOLIO ─────────────────────────────────── -->
+  <!-- -- PORTFOLIO ----------------------------------- -->
   <section id="portfolio">
     <div class="container">
       <span class="section-label">Projects</span>
       <h2 class="section-title">Selected Work</h2>
       <p class="section-subtitle">
-        Research-grade and industry projects — hardware design, photonic sensing, and diagnostics.
+        Research-grade and industry projects - hardware design, photonic sensing, and diagnostics.
       </p>
 
       <div class="portfolio-grid">
@@ -958,17 +968,11 @@ document.querySelectorAll(".nav-links a").forEach((link) => {
           </div>
           <h3>FPGA-Based BLDC Motor Control</h3>
           <p>
-            Designed a Brushless DC motor drive on FPGA — PWM generation,
+            Designed a Brushless DC motor drive on FPGA - PWM generation,
             Hall-effect sensor decoding, and closed-loop speed regulation
             via a Verilog-described digital PI controller.
           </p>
-          <div class="portfolio-tags">
-            <span class="portfolio-tag">Verilog / HDL</span>
-            <span class="portfolio-tag">Xilinx Vivado</span>
-            <span class="portfolio-tag">FPGA</span>
-            <span class="portfolio-tag">Digital Control</span>
-            <span class="portfolio-tag">PWM</span>
-          </div>
+          <span class="project-meta">FPGA control architecture</span>
         </article>
 
         <article class="portfolio-card">
@@ -979,16 +983,9 @@ document.querySelectorAll(".nav-links a").forEach((link) => {
           <p>
             Developed a diaphragm-based Fiber Bragg Grating sensor for underwater
             pressure measurement at ~48.7 m depth. Validated via ANSYS FEM and
-            experimental characterisation — published in Springer LNEE, ICNERE 2026, Japan.
+            experimental characterisation - published in Springer LNEE, ICNERE 2026, Japan.
           </p>
-          <div class="portfolio-tags">
-            <span class="portfolio-tag">FBG Sensing</span>
-            <span class="portfolio-tag">ANSYS FEM</span>
-            <span class="portfolio-tag">Python</span>
-            <span class="portfolio-tag">MATLAB</span>
-            <span class="portfolio-tag">Photonics</span>
-            <span class="portfolio-tag">Springer LNEE</span>
-          </div>
+          <span class="project-meta">Published sensor research</span>
           <a href="projects/fbg-research/index.html" class="project-link">
             Read Research
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
@@ -999,116 +996,43 @@ document.querySelectorAll(".nav-links a").forEach((link) => {
           <div class="pcard-icon">
             <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M2 12h4M18 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
           </div>
-          <h3>Analog Signature Analysis — PCB Diagnostics</h3>
+          <h3>Analog Signature Analysis - PCB Diagnostics</h3>
           <p>
             Led a 5-member team at PLN Indonesia Power using ASA methodology
             with FT100 &amp; PFL780 instruments to identify fault signatures
             on live industrial PCBs. Produced structured technical reports
             for management review.
           </p>
-          <div class="portfolio-tags">
-            <span class="portfolio-tag">Analog Electronics</span>
-            <span class="portfolio-tag">LTSpice</span>
-            <span class="portfolio-tag">PCB Diagnostics</span>
-            <span class="portfolio-tag">I–V Analysis</span>
-            <span class="portfolio-tag">Team Lead</span>
-          </div>
+          <span class="project-meta">Industrial diagnostics and reporting</span>
         </article>
 
         <!-- Project 4: VR Museum -->
         <article class="portfolio-card vr-card">
           <a href="https://www.spatial.io/s/Museum-VR-Sejarah-DTE-FTUI-66c4453c0300d9b2b814d2d7?share=8188769410225588882"
-             target="_blank" rel="noopener" style="display:block; color:inherit; text-decoration:none;">
-            <!-- VR Thumbnail — pure SVG scene -->
+             target="_blank" rel="noopener" aria-label="Open Virtual Museum DTE FTUI in Spatial"
+             style="display:block; color:inherit; text-decoration:none;">
+            <!-- VR thumbnail logo -->
             <div class="vr-thumbnail">
-              <svg viewBox="0 0 400 160" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
-                <!-- sky gradient bg -->
-                <defs>
-                  <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stop-color="#0a1628"/>
-                    <stop offset="100%" stop-color="#102a55"/>
-                  </linearGradient>
-                  <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stop-color="#0d2240"/>
-                    <stop offset="100%" stop-color="#071529"/>
-                  </linearGradient>
-                  <linearGradient id="glow" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stop-color="#1e6df7" stop-opacity="0.7"/>
-                    <stop offset="100%" stop-color="#1e6df7" stop-opacity="0"/>
-                  </linearGradient>
-                </defs>
-                <!-- background -->
-                <rect width="400" height="160" fill="url(#sky)"/>
-                <!-- floor -->
-                <rect y="110" width="400" height="50" fill="url(#floor)"/>
-                <!-- floor grid lines perspective -->
-                <line x1="200" y1="110" x2="0"   y2="160" stroke="#1e6df7" stroke-width="0.4" stroke-opacity="0.3"/>
-                <line x1="200" y1="110" x2="80"  y2="160" stroke="#1e6df7" stroke-width="0.4" stroke-opacity="0.3"/>
-                <line x1="200" y1="110" x2="160" y2="160" stroke="#1e6df7" stroke-width="0.4" stroke-opacity="0.3"/>
-                <line x1="200" y1="110" x2="240" y2="160" stroke="#1e6df7" stroke-width="0.4" stroke-opacity="0.3"/>
-                <line x1="200" y1="110" x2="320" y2="160" stroke="#1e6df7" stroke-width="0.4" stroke-opacity="0.3"/>
-                <line x1="200" y1="110" x2="400" y2="160" stroke="#1e6df7" stroke-width="0.4" stroke-opacity="0.3"/>
-                <!-- horizontal floor lines -->
-                <line x1="0" y1="125" x2="400" y2="125" stroke="#1e6df7" stroke-width="0.3" stroke-opacity="0.2"/>
-                <line x1="0" y1="140" x2="400" y2="140" stroke="#1e6df7" stroke-width="0.3" stroke-opacity="0.2"/>
-                <line x1="0" y1="155" x2="400" y2="155" stroke="#1e6df7" stroke-width="0.3" stroke-opacity="0.2"/>
-                <!-- building left -->
-                <rect x="30" y="50" width="70" height="60" fill="#0e2347" stroke="#1e6df7" stroke-width="0.8" stroke-opacity="0.6"/>
-                <rect x="40" y="58" width="14" height="18" fill="#1e6df7" fill-opacity="0.25" stroke="#1e6df7" stroke-width="0.5"/>
-                <rect x="60" y="58" width="14" height="18" fill="#1e6df7" fill-opacity="0.15" stroke="#1e6df7" stroke-width="0.5"/>
-                <rect x="80" y="58" width="14" height="18" fill="#1e6df7" fill-opacity="0.25" stroke="#1e6df7" stroke-width="0.5"/>
-                <rect x="40" y="82" width="14" height="18" fill="#1e6df7" fill-opacity="0.1"  stroke="#1e6df7" stroke-width="0.5"/>
-                <rect x="60" y="82" width="14" height="18" fill="#1e6df7" fill-opacity="0.25" stroke="#1e6df7" stroke-width="0.5"/>
-                <rect x="80" y="82" width="14" height="18" fill="#1e6df7" fill-opacity="0.1"  stroke="#1e6df7" stroke-width="0.5"/>
-                <!-- building right -->
-                <rect x="300" y="45" width="75" height="65" fill="#0e2347" stroke="#1e6df7" stroke-width="0.8" stroke-opacity="0.6"/>
-                <rect x="310" y="55" width="14" height="18" fill="#1e6df7" fill-opacity="0.2"  stroke="#1e6df7" stroke-width="0.5"/>
-                <rect x="330" y="55" width="14" height="18" fill="#1e6df7" fill-opacity="0.35" stroke="#1e6df7" stroke-width="0.5"/>
-                <rect x="350" y="55" width="14" height="18" fill="#1e6df7" fill-opacity="0.15" stroke="#1e6df7" stroke-width="0.5"/>
-                <rect x="310" y="80" width="14" height="18" fill="#1e6df7" fill-opacity="0.3"  stroke="#1e6df7" stroke-width="0.5"/>
-                <rect x="330" y="80" width="14" height="18" fill="#1e6df7" fill-opacity="0.1"  stroke="#1e6df7" stroke-width="0.5"/>
-                <rect x="350" y="80" width="14" height="18" fill="#1e6df7" fill-opacity="0.3"  stroke="#1e6df7" stroke-width="0.5"/>
-                <!-- main hall center -->
-                <rect x="130" y="30" width="140" height="80" fill="#0c1e3a" stroke="#1e6df7" stroke-width="1" stroke-opacity="0.8"/>
-                <!-- roof arch -->
-                <path d="M130,30 Q200,0 270,30" fill="none" stroke="#1e6df7" stroke-width="1" stroke-opacity="0.7"/>
-                <!-- center door -->
-                <rect x="185" y="78" width="30" height="32" rx="2" fill="#1e6df7" fill-opacity="0.12" stroke="#1e6df7" stroke-width="0.8"/>
-                <!-- center windows -->
-                <rect x="140" y="42" width="22" height="18" rx="1" fill="#1e6df7" fill-opacity="0.2" stroke="#1e6df7" stroke-width="0.6"/>
-                <rect x="170" y="42" width="22" height="18" rx="1" fill="#1e6df7" fill-opacity="0.35" stroke="#1e6df7" stroke-width="0.6"/>
-                <rect x="208" y="42" width="22" height="18" rx="1" fill="#1e6df7" fill-opacity="0.2" stroke="#1e6df7" stroke-width="0.6"/>
-                <rect x="238" y="42" width="22" height="18" rx="1" fill="#1e6df7" fill-opacity="0.35" stroke="#1e6df7" stroke-width="0.6"/>
-                <!-- glow below building -->
-                <ellipse cx="200" cy="112" rx="80" ry="8" fill="#1e6df7" fill-opacity="0.12"/>
-                <!-- ambient star dots -->
-                <circle cx="20"  cy="12" r="0.8" fill="white" fill-opacity="0.6"/>
-                <circle cx="55"  cy="6"  r="0.6" fill="white" fill-opacity="0.5"/>
-                <circle cx="100" cy="15" r="0.7" fill="white" fill-opacity="0.4"/>
-                <circle cx="150" cy="8"  r="0.5" fill="white" fill-opacity="0.5"/>
-                <circle cx="260" cy="10" r="0.8" fill="white" fill-opacity="0.6"/>
-                <circle cx="340" cy="5"  r="0.6" fill="white" fill-opacity="0.4"/>
-                <circle cx="380" cy="18" r="0.7" fill="white" fill-opacity="0.5"/>
-              </svg>
-              <span class="vr-open-badge">
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-                Open in Spatial
-              </span>
-              <span class="vr-thumbnail-label">Virtual Museum · DTE FTUI</span>
+              <div class="dte-logo-mark" aria-hidden="true">
+                <div class="dte-logo-oval">
+                  <span class="dte-logo-text">DTE</span>
+                </div>
+                <span class="dte-logo-subtitle">VR TEAM</span>
+              </div>
             </div>
           </a>
-          <h3>Virtual Museum — DTE FTUI</h3>
+          <h3>Virtual Museum - DTE FTUI</h3>
           <p>
             Coordinated a 10-member team to build an immersive VR museum documenting
             the history of Electrical Engineering at University of Indonesia.
             Published on Spatial.io with interactive 3D environments.
           </p>
-          <div class="portfolio-tags">
-            <span class="portfolio-tag">VR / Spatial.io</span>
-            <span class="portfolio-tag">Team Coordination</span>
-            <span class="portfolio-tag">Content Development</span>
-            <span class="portfolio-tag">UI/UX</span>
-          </div>
+          <span class="project-meta">Team coordination and digital archive</span>
+          <a href="https://www.spatial.io/s/Museum-VR-Sejarah-DTE-FTUI-66c4453c0300d9b2b814d2d7?share=8188769410225588882"
+             target="_blank" rel="noopener" class="project-link">
+            Open in Spatial
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
         </article>
 
         <article class="portfolio-card">
@@ -1121,12 +1045,7 @@ document.querySelectorAll(".nav-links a").forEach((link) => {
             the Excel model: annual cash flow, discounted factor, NPV, IRR,
             discounted payback period, and sensitivity testing.
           </p>
-          <div class="portfolio-tags">
-            <span class="portfolio-tag">NPV / IRR</span>
-            <span class="portfolio-tag">Cashflow Model</span>
-            <span class="portfolio-tag">Vanilla JS</span>
-            <span class="portfolio-tag">GitHub Pages</span>
-          </div>
+          <span class="project-meta">Investment evaluation web tool</span>
           <a href="projects/feasibility-analysis/index.html" class="project-link">
             Open Analysis
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
@@ -1138,18 +1057,13 @@ document.querySelectorAll(".nav-links a").forEach((link) => {
           <div class="pcard-icon">
             <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
           </div>
-          <h3>Kalkulator Waris Islam — Faraidh</h3>
+          <h3>Kalkulator Waris Islam - Faraidh</h3>
           <p>
             Aplikasi web interaktif untuk menghitung pembagian harta waris
             berdasarkan hukum Faraidh. Mendukung seluruh ashab al-furud,
-            ashabah, kasus 'aul, dan radd — langsung di browser.
+            ashabah, kasus 'aul, dan radd - langsung di browser.
           </p>
-          <div class="portfolio-tags">
-            <span class="portfolio-tag">HTML5 / CSS3</span>
-            <span class="portfolio-tag">Vanilla JS</span>
-            <span class="portfolio-tag">Faraidh</span>
-            <span class="portfolio-tag">Web App</span>
-          </div>
+          <span class="project-meta">Browser-based calculation tool</span>
           <a href="projects/waris/index.html" class="project-link">
             Buka Kalkulator
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
@@ -1161,7 +1075,7 @@ document.querySelectorAll(".nav-links a").forEach((link) => {
   </section>
 
 
-  <!-- ── EXPERIENCE ────────────────────────────────── -->
+  <!-- -- EXPERIENCE ---------------------------------- -->
   <section id="experience">
     <div class="container">
       <span class="section-label">Experience</span>
@@ -1173,9 +1087,9 @@ document.querySelectorAll(".nav-links a").forEach((link) => {
         <div class="timeline-card">
           <div class="tl-header">
             <h3 class="tl-role">Assistant Lecturer</h3>
-            <span class="tl-period">March 2023 – Present</span>
+            <span class="tl-period">March 2023 - Present</span>
           </div>
-          <p class="tl-org">University of Indonesia — Dept. of Electrical Engineering</p>
+          <p class="tl-org">University of Indonesia - Dept. of Electrical Engineering</p>
           <ul class="tl-bullets">
             <li>Teaching support for electric circuits, semiconductor devices, and electronic circuits courses.</li>
             <li>Facilitated problem-solving sessions and engineering concept discussions for undergraduates.</li>
@@ -1185,7 +1099,7 @@ document.querySelectorAll(".nav-links a").forEach((link) => {
         <div class="timeline-card">
           <div class="tl-header">
             <h3 class="tl-role">Undergraduate Thesis Researcher</h3>
-            <span class="tl-period">August 2024 – July 2025</span>
+            <span class="tl-period">August 2024 - July 2025</span>
           </div>
           <p class="tl-org">National Research and Innovation Agency (BRIN), Banten</p>
           <ul class="tl-bullets">
@@ -1197,8 +1111,8 @@ document.querySelectorAll(".nav-links a").forEach((link) => {
 
         <div class="timeline-card">
           <div class="tl-header">
-            <h3 class="tl-role">Internship — Project Construction &amp; Maintenance</h3>
-            <span class="tl-period">July 2024 – December 2024</span>
+            <h3 class="tl-role">Internship - Project Construction &amp; Maintenance</h3>
+            <span class="tl-period">July 2024 - December 2024</span>
           </div>
           <p class="tl-org">PLN Indonesia Power Services, West Java</p>
           <ul class="tl-bullets">
@@ -1211,7 +1125,7 @@ document.querySelectorAll(".nav-links a").forEach((link) => {
         <div class="timeline-card">
           <div class="tl-header">
             <h3 class="tl-role">Physics Tutor</h3>
-            <span class="tl-period">August 2025 – December 2025</span>
+            <span class="tl-period">August 2025 - December 2025</span>
           </div>
           <p class="tl-org">Bimbingan Tes Alumni (BTA) 45, Jakarta</p>
           <ul class="tl-bullets">
@@ -1222,8 +1136,8 @@ document.querySelectorAll(".nav-links a").forEach((link) => {
 
         <div class="timeline-card">
           <div class="tl-header">
-            <h3 class="tl-role">Internship — Virtual Museum Coordination</h3>
-            <span class="tl-period">October 2023 – September 2024</span>
+            <h3 class="tl-role">Internship - Virtual Museum Coordination</h3>
+            <span class="tl-period">October 2023 - September 2024</span>
           </div>
           <p class="tl-org">Dept. of Electrical Engineering FTUI, West Java</p>
           <ul class="tl-bullets">
@@ -1237,7 +1151,7 @@ document.querySelectorAll(".nav-links a").forEach((link) => {
   </section>
 
 
-  <!-- ── PUBLICATION ────────────────────────────────── -->
+  <!-- -- PUBLICATION ---------------------------------- -->
   <section id="publication">
     <div class="container">
       <span class="section-label">Publication</span>
@@ -1249,17 +1163,17 @@ document.querySelectorAll(".nav-links a").forEach((link) => {
           Using a Stainless-Steel Diaphragm for Underwater Applications
         </p>
         <p class="pub-meta">
-          Arief, R. K., et al. (2026). <em>Springer Lecture Notes in Electrical Engineering (LNEE)</em> —
+          Arief, R. K., et al. (2026). <em>Springer Lecture Notes in Electrical Engineering (LNEE)</em> -
           Proceedings of the 6th International Conference on Nano Electronics Research and Education (ICNERE).
           <br>Presented in Hamamatsu, Shizuoka, Japan.
         </p>
-        <span class="pub-venue">Springer LNEE · ICNERE 2026 · Japan</span>
+        <span class="pub-venue">Springer LNEE  -  ICNERE 2026  -  Japan</span>
       </div>
     </div>
   </section>
 
 
-  <!-- ── ACHIEVEMENTS ────────────────────────────────── -->
+  <!-- -- ACHIEVEMENTS ---------------------------------- -->
   <section id="achievements">
     <div class="container">
       <span class="section-label">Achievements &amp; Credentials</span>
@@ -1273,7 +1187,7 @@ document.querySelectorAll(".nav-links a").forEach((link) => {
           </div>
           <div class="ach-body">
             <strong>Roberto Rocca Scholarship Awardee</strong>
-            <span>2025 — Competitive merit-based international scholarship</span>
+            <span>2025 - Competitive merit-based international scholarship</span>
           </div>
         </div>
 
@@ -1293,7 +1207,7 @@ document.querySelectorAll(".nav-links a").forEach((link) => {
           </div>
           <div class="ach-body">
             <strong>FPGA Architecture Certificate</strong>
-            <span>FPGA-Based System for Industrial Applications — L&amp;T EduTech, 2026</span>
+            <span>FPGA-Based System for Industrial Applications - L&amp;T EduTech, 2026</span>
           </div>
         </div>
 
@@ -1303,7 +1217,7 @@ document.querySelectorAll(".nav-links a").forEach((link) => {
           </div>
           <div class="ach-body">
             <strong>TOEFL ITP 610 / 677</strong>
-            <span>ETS Official Score — 2026</span>
+            <span>ETS Official Score - 2026</span>
           </div>
         </div>
 
@@ -1312,7 +1226,7 @@ document.querySelectorAll(".nav-links a").forEach((link) => {
   </section>
 
 
-  <!-- ── CONTACT ────────────────────────────────────── -->
+  <!-- -- CONTACT -------------------------------------- -->
   <section id="contact">
     <div class="container">
       <span class="section-label">Contact</span>
@@ -1380,7 +1294,7 @@ document.querySelectorAll(".nav-links a").forEach((link) => {
             in energy, defence, or semiconductor sectors.
           </p>
           <p>
-            Response within 24–48 hours on business days.
+            Response within 24-48 hours on business days.
             Please include a brief description of the opportunity when reaching out.
           </p>
         </div>
@@ -1390,7 +1304,7 @@ document.querySelectorAll(".nav-links a").forEach((link) => {
   </section>
 
 
-  <!-- ── FOOTER ─────────────────────────────────────── -->
+  <!-- -- FOOTER --------------------------------------- -->
   <footer>
     <p>&copy; 2026 <span>Rafi Kamil Arief</span>. All rights reserved.</p>
     <p class="made-with">Made with IBM Bob</p>

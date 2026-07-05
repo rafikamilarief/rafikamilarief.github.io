@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Feasibility Theory Notes | Rafi Kamil Arief</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <a class="back-link" href="../../index.html">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+      Back to Portfolio
+    </a>
+    <nav class="page-tabs" aria-label="Feasibility analysis pages">
+      <a href="index.html">Calculator</a>
+      <a class="active" href="theory.html">Theory Notes</a>
+    </nav>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <p class="eyebrow">Engineering Economy</p>
+      <h1>Teori Feasibility Analysis</h1>
+      <p>
+        Ringkasan teks dari materi Manajemen dan Ekonomi Teknik yang dipakai
+        untuk memahami model kalkulator: struktur biaya, time value of money,
+        discounted cash flow, NPV, IRR, payback period, depresiasi, pajak,
+        inflasi, dan sensitivitas.
+      </p>
+    </section>
+
+    <section class="theory-layout">
+      <aside class="panel theory-nav" aria-label="Daftar teori">
+        <a href="#engineering-economy">Ekonomi Teknik</a>
+        <a href="#cost">Konsep Biaya</a>
+        <a href="#cashflow">Arus Kas</a>
+        <a href="#time-value">Time Value</a>
+        <a href="#evaluation">Evaluasi Proyek</a>
+        <a href="#tax">Depresiasi, Pajak, Inflasi</a>
+        <a href="#sensitivity">Sensitivitas</a>
+        <a href="#mapping">Mapping ke Kalkulator</a>
+      </aside>
+
+      <div class="theory-content">
+        <article class="panel theory-card" id="engineering-economy">
+          <p class="eyebrow">Foundation</p>
+          <h2>Ekonomi Teknik dan Feasibility</h2>
+          <p>
+            Ekonomi teknik adalah evaluasi sistematis atas biaya dan manfaat
+            suatu solusi teknik. Tujuannya bukan hanya menghitung apakah sebuah
+            proyek dapat dibangun, tetapi apakah manfaat finansialnya cukup
+            untuk menutup investasi, biaya operasi, risiko, dan target
+            pengembalian modal dalam jangka panjang.
+          </p>
+          <ul>
+            <li>Kembangkan alternatif sebelum membandingkan keputusan.</li>
+            <li>Fokus pada perbedaan biaya dan manfaat antar alternatif.</li>
+            <li>Gunakan sudut pandang dan satuan ukur yang konsisten.</li>
+            <li>Pertimbangkan kriteria finansial, risiko, dan ketidakpastian.</li>
+            <li>Tinjau ulang keputusan ketika asumsi berubah.</li>
+          </ul>
+        </article>
+
+        <article class="panel theory-card" id="cost">
+          <p class="eyebrow">Cost Structure</p>
+          <h2>Konsep Biaya</h2>
+          <p>
+            Biaya adalah nilai yang dikorbankan untuk mendapatkan barang atau
+            jasa yang diharapkan memberi manfaat saat ini atau masa depan.
+            Dalam feasibility analysis, klasifikasi biaya penting karena tidak
+            semua biaya diperlakukan sama di cash flow.
+          </p>
+          <ul>
+            <li>Fixed cost: biaya yang relatif tidak berubah terhadap level produksi.</li>
+            <li>Variable cost: biaya yang berubah mengikuti volume aktivitas.</li>
+            <li>Direct cost: biaya yang terkait langsung dengan output.</li>
+            <li>Indirect cost: biaya yang tidak langsung tetapi mendukung output.</li>
+            <li>Cash cost: biaya yang benar-benar keluar sebagai pembayaran tunai.</li>
+            <li>Book cost: biaya akuntansi tanpa arus kas langsung, seperti depresiasi.</li>
+            <li>Sunk cost: biaya masa lalu yang tidak relevan untuk keputusan baru.</li>
+            <li>Life-cycle cost: total biaya selama umur proyek, termasuk investment cost, operation and maintenance cost, dan disposal cost.</li>
+          </ul>
+          <div class="formula-list">
+            <div class="formula">
+              <strong>Total revenue</strong>
+              <code>TR = quantity sold x selling price</code>
+            </div>
+            <div class="formula">
+              <strong>Profit or loss</strong>
+              <code>Profit = total revenue - total cost</code>
+            </div>
+            <div class="formula">
+              <strong>Break-even point</strong>
+              <code>BEP occurs when profit = 0, or total revenue = total cost.</code>
+            </div>
+          </div>
+        </article>
+
+        <article class="panel theory-card" id="cashflow">
+          <p class="eyebrow">Cash Flow</p>
+          <h2>Diagram Arus Kas</h2>
+          <p>
+            Diagram arus kas memvisualisasikan aliran uang pada waktu berbeda.
+            Garis horizontal menunjukkan waktu, panah menunjukkan arus kas, dan
+            tanda positif atau negatif bergantung pada sudut pandang analisis.
+          </p>
+          <ul>
+            <li>P adalah present value atau nilai uang saat ini.</li>
+            <li>F adalah future value atau nilai uang pada masa depan.</li>
+            <li>A adalah arus kas seragam pada tiap periode.</li>
+            <li>i adalah suku bunga efektif per periode.</li>
+            <li>N adalah jumlah periode analisis.</li>
+          </ul>
+          <p>
+            Pada kalkulator ini, tahun ke-0 berisi investasi awal. Tahun 1
+            sampai 20 berisi revenue, biaya operasi, biaya pemeliharaan, bunga
+            pinjaman, pajak, dan net cash flow.
+          </p>
+        </article>
+
+        <article class="panel theory-card" id="time-value">
+          <p class="eyebrow">Time Value of Money</p>
+          <h2>Nilai Uang terhadap Waktu</h2>
+          <p>
+            Uang memiliki nilai waktu karena uang saat ini dapat digunakan untuk
+            menghasilkan return. Karena itu, arus kas pada tahun berbeda harus
+            dikonversi ke basis waktu yang sama sebelum dibandingkan.
+          </p>
+          <div class="formula-list">
+            <div class="formula">
+              <strong>Compound future value</strong>
+              <code>F = P x (1 + i)^N</code>
+            </div>
+            <div class="formula">
+              <strong>Present value of a future amount</strong>
+              <code>P = F / (1 + i)^N</code>
+            </div>
+            <div class="formula">
+              <strong>Present value of uniform annuity</strong>
+              <code>P = A x [((1 + i)^N - 1) / (i x (1 + i)^N)]</code>
+            </div>
+            <div class="formula">
+              <strong>Effective annual rate</strong>
+              <code>i_effective = (1 + r / M)^M - 1</code>
+            </div>
+          </div>
+          <p>
+            Calculator memakai discount factor tahunan:
+            <code>DF_year = 1 / (1 + MARR)^year</code>. Nilai present value
+            tiap cash flow dihitung dengan mengalikan cash flow tahun tersebut
+            dengan discount factor.
+          </p>
+        </article>
+
+        <article class="panel theory-card" id="evaluation">
+          <p class="eyebrow">Decision Metrics</p>
+          <h2>Evaluasi Proyek</h2>
+          <p>
+            Studi ekonomi proyek modal perlu mempertimbangkan pengembalian yang
+            semestinya dihasilkan. Beberapa metode utama adalah equivalent
+            worth, rate of return, dan payback period.
+          </p>
+          <h3>MARR</h3>
+          <p>
+            Minimum Attractive Rate of Return adalah tingkat pengembalian
+            minimum yang diinginkan organisasi. MARR dipakai sebagai discount
+            rate dan pembanding IRR.
+          </p>
+          <h3>NPV atau Present Worth</h3>
+          <p>
+            NPV mengonversi seluruh arus kas ke nilai sekarang. Proyek
+            ekonomis jika NPV pada tingkat MARR lebih besar atau sama dengan nol.
+          </p>
+          <div class="formula-list">
+            <div class="formula">
+              <strong>Net present value</strong>
+              <code>NPV = sum(Net Cash Flow_k / (1 + MARR)^k), for k = 0..N</code>
+            </div>
+            <div class="formula">
+              <strong>Decision rule</strong>
+              <code>If NPV >= 0, the project is economically acceptable by NPV.</code>
+            </div>
+          </div>
+          <h3>IRR</h3>
+          <p>
+            Internal Rate of Return adalah discount rate yang membuat NPV sama
+            dengan nol. Proyek dianggap menarik jika IRR lebih besar dari MARR.
+          </p>
+          <div class="formula-list">
+            <div class="formula">
+              <strong>IRR condition</strong>
+              <code>Find i such that NPV(i) = 0.</code>
+            </div>
+            <div class="formula">
+              <strong>Decision rule</strong>
+              <code>If IRR > MARR, the project is economically acceptable by IRR.</code>
+            </div>
+          </div>
+          <h3>Discounted Payback Period</h3>
+          <p>
+            DPP adalah periode ketika akumulasi present value arus kas bersih
+            pertama kali menutup investasi awal. DPP lebih konservatif daripada
+            simple payback karena memperhitungkan nilai waktu uang.
+          </p>
+        </article>
+
+        <article class="panel theory-card" id="tax">
+          <p class="eyebrow">After-Tax Model</p>
+          <h2>Depresiasi, Pajak, dan Inflasi</h2>
+          <p>
+            Depresiasi adalah alokasi biaya aset sepanjang masa manfaatnya.
+            Depresiasi bukan cash outflow langsung, tetapi mempengaruhi taxable
+            income sehingga berpengaruh pada pajak.
+          </p>
+          <div class="formula-list">
+            <div class="formula">
+              <strong>Straight-line depreciation</strong>
+              <code>Annual depreciation = (asset cost - salvage value) / depreciation years</code>
+            </div>
+            <div class="formula">
+              <strong>Taxable income</strong>
+              <code>Taxable income = gross income - total cost - depreciation</code>
+            </div>
+            <div class="formula">
+              <strong>Income tax</strong>
+              <code>Tax = taxable income x tax rate</code>
+            </div>
+          </div>
+          <p>
+            Inflasi membuat kebutuhan biaya pada masa depan berubah. Jika arus
+            kas dinyatakan dalam actual dollar atau rupiah nominal, discount
+            rate yang dipakai harus konsisten sebagai market interest rate.
+            Pada calculator ini, biaya operasi dan pemeliharaan dinaikkan
+            menggunakan tingkat inflasi tahunan.
+          </p>
+        </article>
+
+        <article class="panel theory-card" id="sensitivity">
+          <p class="eyebrow">Risk Check</p>
+          <h2>Analisis Sensitivitas</h2>
+          <p>
+            Analisis sensitivitas menguji seberapa kuat keputusan proyek ketika
+            asumsi utama berubah. Calculator memakai one-at-a-time sensitivity:
+            satu parameter diubah sementara parameter lain tetap pada baseline.
+          </p>
+          <ul>
+            <li>Produksi energi diuji karena langsung mempengaruhi revenue.</li>
+            <li>Biaya investasi diuji karena mempengaruhi kebutuhan modal awal.</li>
+            <li>Biaya operasi dan pemeliharaan diuji karena berulang tiap tahun.</li>
+            <li>Suku bunga pinjaman diuji karena mempengaruhi interest dan debt service.</li>
+          </ul>
+          <p>
+            Jika NPV berubah sangat besar terhadap satu parameter, proyek
+            sensitif terhadap parameter tersebut dan asumsi datanya perlu
+            diperiksa lebih hati-hati.
+          </p>
+        </article>
+
+        <article class="panel theory-card" id="mapping">
+          <p class="eyebrow">Model Mapping</p>
+          <h2>Hubungan Teori dengan Calculator</h2>
+          <ul>
+            <li>Revenue dihitung dari produksi energi tahunan dan harga listrik.</li>
+            <li>Total investment dihitung dari kapasitas PLTS dan biaya investasi per Wp.</li>
+            <li>Equity dan debt dipisahkan untuk merepresentasikan sumber modal.</li>
+            <li>Loan payment dihitung sebagai annuity selama masa pinjaman.</li>
+            <li>Depresiasi memakai straight-line method.</li>
+            <li>Pajak dihitung setelah revenue dikurangi biaya dan depresiasi.</li>
+            <li>PV net cash flow dihitung memakai MARR sebagai discount rate.</li>
+            <li>NPV, IRR, dan DPP menjadi indikator utama kelayakan.</li>
+          </ul>
+        </article>
+
+        <article class="panel theory-card">
+          <p class="eyebrow">Sources</p>
+          <h2>Sumber Materi</h2>
+          <ul class="source-list">
+            <li>MKE_1.pdf - Introduction.</li>
+            <li>MKE_2 Konsep Biaya.pdf.</li>
+            <li>MET_3 Konsep Ekivalensi Arus Kas.pdf.</li>
+            <li>MET_4 Anuitas Tertunda, Gradien Seragam.pdf.</li>
+            <li>MET_5 Suku Bunga Terhadap Waktu.pdf.</li>
+            <li>MET_6 Evaluasi Proyek.pdf.</li>
+            <li>MET_7 Depresiasi, Pajak, dan Inflasi.pdf.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Text-only notes derived from local engineering-economy course materials in the feasibility analysis workspace.</p>
+  </footer>
+</body>
+</html>
